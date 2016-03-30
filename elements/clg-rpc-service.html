@@ -1,0 +1,39 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-rpc-service">
+  
+<template>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.RpcService');
+
+  goog.require('coligo.scripts.Departments');
+ 
+  coligo.elements.RpcService = class RpcService {
+
+    get behaviors() {
+      return [
+      ];
+    }
+
+    beforeRegister() {
+      this.is = 'clg-rpc-service';
+      this.properties = {
+      };
+    }
+
+    ready() { 
+    }
+
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.RpcService);
+
+</script>
+
+</dom-module>

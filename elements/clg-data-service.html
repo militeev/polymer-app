@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-data-service">
+  
+<template>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.DataService');
+
+  goog.require('coligo.behaviors.StateMutator');
+ 
+  coligo.elements.DataService = class DataService {
+
+    get behaviors() {
+      return [
+        coligo.behaviors.StateMutator
+      ];
+    }
+
+    beforeRegister() {
+      this.is = 'clg-data-service';
+      this.properties = {
+        state: {
+          type: Object,
+          value: {},
+          notify: true
+        }
+      };
+    }
+
+    ready() { 
+    }
+
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.DataService);
+
+</script>
+
+</dom-module>

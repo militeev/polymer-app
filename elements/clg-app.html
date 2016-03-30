@@ -29,10 +29,13 @@
     </div>
     <div id="column1">
       <iron-pages attr-for-selected="page"
-                  selected="[[state.currentPage]]">
+                  selected="[[state.currentPage]]"
+                  on-iron-select="onPageSelect_"
+                  on-iron-deselect="onPageDeselect_">
         <section page="departments">
           <h3>Departments</h3>
-          <clg-departments list="[[state.departments]]">
+          <clg-departments list="[[state.departments]]"
+                           page-listener>
           </clg-departments>
         </section>
         <section page="projects">
@@ -87,6 +90,14 @@
     attached() { }
     detached() { }
     attributeChanged() { }
+
+    onPageSelect_(event, detail) {
+      console.log('page selected');
+    }
+
+    onPageDeselect_(event, detail) {
+      console.log('page deselected');
+    }
 
   }
 
