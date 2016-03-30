@@ -1,0 +1,10 @@
+{
+  "name": "my-polymer-app",
+  "version": "0.0.1",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.3",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
+    "lodash": "~4.3.0",
+    "google-closure-library": "*"
+  }
+}

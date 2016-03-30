@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="clg-menu.html">
+<link rel="import" href="clg-router.html">
+
+<dom-module id="clg-app">
+
+<template>
+  <h2>My Application</h2>
+  <clg-menu state="[[state]]"></clg-menu>
+  <clg-router state="{{state}}"></clg-router>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.Application');
+
+  goog.require('coligo.behaviors.ApplicationState');
+
+  let MyBehavior = {  };
+ 
+  coligo.elements.Application = class App {
+
+    // Define behaviors with a getter.
+    get behaviors() {
+      return [
+        coligo.behaviors.ApplicationState
+      ];
+    }
+
+    // Element setup goes in beforeRegister instead of createdCallback.
+    beforeRegister() {
+      this.is = 'clg-app';
+
+      // Define the properties object in beforeRegister.
+      this.properties = {
+        symbols: {
+          type: Array,
+          value: () => []
+        }
+      };
+    }
+
+    // Define other lifecycle methods as you need.
+    ready() { 
+      console.log('app attached');
+    }
+    attached() { }
+    detached() { }
+    attributeChanged() { }
+
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.Application);
+
+</script>
+
+</dom-module>

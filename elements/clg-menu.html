@@ -1,0 +1,84 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-menu">
+  
+<template>
+  <style is="custom-style">
+  </style>
+  <h3>Menu</h3>
+  <template is="dom-repeat" items="[[menuItems]]">
+    <a selected="[[item.selected]]"
+       href="[[item.url]]">[[item.label]]</a><br>
+  </template>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.Menu');
+ 
+  coligo.elements.Menu = class Menu {
+
+    // Define behaviors with a getter.
+    get behaviors() {
+      return [];
+    }
+
+    get observers() {
+      return [
+        'onRouteChanged_(state.route)'
+      ]
+    }
+
+    // Element setup goes in beforeRegister instead of createdCallback.
+    beforeRegister() {
+      this.is = 'clg-menu';
+
+      // Define the properties object in beforeRegister.
+      this.properties = {
+        menuItems: {
+          type: Array,
+          value: [
+            {
+              label: 'Departments',
+              url: '#departments',
+              selected: false
+            },
+            {
+              label: 'Projects',
+              url: '#projects',
+              selected: false
+            },
+            {
+              label: 'Employees',
+              url: '#employees',
+              selected: false
+            }
+          ]
+        }
+      };
+    }
+
+    // Define other lifecycle methods as you need.
+    ready() { }
+    attached() { }
+    detached() { }
+    attributeChanged() { }
+
+    onRouteChanged_() {
+      console.log('Route changed: ' + this.get('state.route'));
+      for (let i = 0; i < this.menuItems.length; i++) {
+        this.set(['menuItems', i, 'selected'],
+                 this.menuItems[i].url == this.get('state.route'));
+      }
+    }
+
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.Menu);
+
+</script>
+
+</dom-module>
