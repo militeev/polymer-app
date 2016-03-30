@@ -35,7 +35,7 @@
         <section page="departments">
           <h3>Departments</h3>
           <clg-departments list="[[state.departments]]"
-                           page-listener>
+                           page-watcher>
           </clg-departments>
         </section>
         <section page="projects">
@@ -93,6 +93,10 @@
 
     onPageSelect_(event, detail) {
       console.log('page selected');
+      Array.from(detail.item.querySelectorAll('[page-watcher]'))
+          .forEach(element => {
+            element.pageWatcher({pageSelected: true});
+          });
     }
 
     onPageDeselect_(event, detail) {

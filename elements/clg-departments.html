@@ -34,6 +34,12 @@
       this.push('list', {departmentName: 'Accounting'});
     }
 
+    pageWatcher(detail) {
+      if (detail.pageSelected) {
+        console.log('Departments page selected and I know it!');
+      }
+    }
+
   }
 
   // Register the element using Polymer's constructor.
