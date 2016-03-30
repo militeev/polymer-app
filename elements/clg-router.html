@@ -15,6 +15,8 @@
  
   coligo.elements.Router = class Router {
 
+
+
     get behaviors() {
       return [
         coligo.behaviors.StateMutator
@@ -33,17 +35,26 @@
         }
       };
 
+      this.pages = {
+        "#departments": "departments",
+        "#projects": "projects",
+        "#employees": "employees",
+      }
     }
 
     onHashChange_() {
       console.log(window.location.hash);
+      this.setRoute_();
+    }
+
+    setRoute_() {
       this.set('state.route', window.location.hash);
+      this.set('state.currentPage', this.pages[window.location.hash]);
     }
 
     ready() { 
       window.addEventListener("hashchange", this.onHashChange_.bind(this));
-      this.set('state.route', window.location.hash);
-      console.log('router ready');
+      this.setRoute_();
     }
 
   }

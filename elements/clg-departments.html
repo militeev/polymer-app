@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-departments">
+  
+<template>
+  <ul>
+    <template is="dom-repeat" items="[[list]]">
+      <li>[[item.departmentName]]</li>
+    </template>
+  </ul>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.Departments');
+
+  coligo.elements.Departments = class Departments {
+
+    get behaviors() {
+      return [
+        coligo.behaviors.ListView
+      ];
+    }
+
+    // Define behaviors with a getter.
+    // Element setup goes in beforeRegister instead of createdCallback.
+    beforeRegister() {
+      this.is = 'clg-departments';
+    }
+
+    ready() {
+      this.push('list', {departmentName: 'Accounting'});
+    }
+
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.Departments);
+
+</script>
+
+</dom-module>

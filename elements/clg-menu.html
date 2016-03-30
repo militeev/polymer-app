@@ -4,10 +4,13 @@
   
 <template>
   <style is="custom-style">
+    a[selected] {
+      background: yellow;
+    }
   </style>
   <h3>Menu</h3>
   <template is="dom-repeat" items="[[menuItems]]">
-    <a selected="[[item.selected]]"
+    <a selected$="[[item.selected]]"
        href="[[item.url]]">[[item.label]]</a><br>
   </template>
 </template>

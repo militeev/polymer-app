@@ -1,13 +1,51 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="clg-menu.html">
 <link rel="import" href="clg-router.html">
+<link rel="import" href="clg-departments.html">
 
 <dom-module id="clg-app">
 
 <template>
+  <style is="custom-style">
+    #main {
+      display: flex;
+    }
+    #menu {
+      width: 150px;
+      height: 100%;
+      border-right: gray 1px solid;
+    }
+    #column1 {
+      width: 250px;
+      height: 100%;
+      border-right: gray 1px solid;
+    }
+  </style>
   <h2>My Application</h2>
-  <clg-menu state="[[state]]"></clg-menu>
+  <div id="main">
+    <div id="menu">
+      <clg-menu state="[[state]]"></clg-menu>
+    </div>
+    <div id="column1">
+      <iron-pages attr-for-selected="page"
+                  selected="[[state.currentPage]]">
+        <section page="departments">
+          <h3>Departments</h3>
+          <clg-departments list="[[state.departments]]">
+          </clg-departments>
+        </section>
+        <section page="projects">
+          <h3>Projects</h3>
+        </section>
+        <section page="employees">
+          <h3>Employees</h3>
+        </section>
+      </iron-pages>
+    </div>
+  </div>
   <clg-router state="{{state}}"></clg-router>
+
 </template>
 
 <script>
