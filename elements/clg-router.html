@@ -15,8 +15,6 @@
  
   coligo.elements.Router = class Router {
 
-
-
     get behaviors() {
       return [
         coligo.behaviors.StateMutator
@@ -48,8 +46,9 @@
     }
 
     setRoute_() {
+      let currentPage = window.location.hash.replace(/\/.*/, '');
       this.set('state.route', window.location.hash);
-      this.set('state.currentPage', this.pages[window.location.hash]);
+      this.set('state.currentPage', this.pages[currentPage]);
     }
 
     ready() { 

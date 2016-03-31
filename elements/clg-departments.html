@@ -5,7 +5,9 @@
 <template>
   <ul>
     <template is="dom-repeat" items="[[list]]">
-      <li>[[item.name]]</li>
+      <li id="[[item.id]]">
+        <a href="#departments/[[item.id]]">[[item.name]]</a>
+      </li>
     </template>
   </ul>
 </template>
@@ -30,21 +32,21 @@
     // Element setup goes in beforeRegister instead of createdCallback.
     beforeRegister() {
       this.is = 'clg-departments';
+      this.properties = {
+        
+      }
     }
 
     ready() {
-      this.push('list', {name: 'Accounting'});
     }
 
     pageWatcher(detail) {
       if (detail.pageSelected) {
-        console.log('Departments page selected and I know it!');
         this.fire('dispatch-action', {
           type: coligo.scripts.actions.FETCH_DEPARTMENTS
         });
       }
       if (detail.pageDeselected) {
-        console.log('And now departments page is deselected...');
       }
     }
 
