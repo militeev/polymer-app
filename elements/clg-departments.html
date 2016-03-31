@@ -16,6 +16,8 @@
 
   goog.provide('coligo.elements.Departments');
 
+  goog.require('coligo.scripts.actions');
+
   coligo.elements.Departments = class Departments {
 
     get behaviors() {
@@ -37,6 +39,12 @@
     pageWatcher(detail) {
       if (detail.pageSelected) {
         console.log('Departments page selected and I know it!');
+        this.fire('dispatch-action', {
+          type: coligo.scripts.actions.FETCH_DEPARTMENTS
+        });
+      }
+      if (detail.pageDeselected) {
+        console.log('And now departments page is deselected...');
       }
     }
 

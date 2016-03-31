@@ -3,6 +3,7 @@
 <link rel="import" href="clg-menu.html">
 <link rel="import" href="clg-router.html">
 <link rel="import" href="clg-departments.html">
+<link rel="import" href="clg-data-service.html">
 
 <dom-module id="clg-app">
 
@@ -22,6 +23,7 @@
       border-right: gray 1px solid;
     }
   </style>
+  <clg-data-service id="data-service" state="{{state}}"></clg-data-service>
   <h2>My Application</h2>
   <div id="main">
     <div id="menu">
@@ -58,6 +60,7 @@
   goog.provide('coligo.elements.Application');
 
   goog.require('coligo.behaviors.ApplicationState');
+  goog.require('coligo.behaviors.ActionDispatcher');
 
   let MyBehavior = {  };
  
@@ -66,7 +69,8 @@
     // Define behaviors with a getter.
     get behaviors() {
       return [
-        coligo.behaviors.ApplicationState
+        coligo.behaviors.ApplicationState,
+        coligo.behaviors.ActionDispatcher,
       ];
     }
 
@@ -93,14 +97,20 @@
 
     onPageSelect_(event, detail) {
       console.log('page selected');
-      Array.from(detail.item.querySelectorAll('[page-watcher]'))
+      this.notifyWatchers(detail.item, 'page-watcher', {pageSelected: true});
+    }
+
+    notifyWatchers(parent, watcherAttribute, detail) {
+      let methodName = goog.string.toCamelCase(watcherAttribute);
+      Array.from(parent.querySelectorAll('[' + watcherAttribute + ']'))
           .forEach(element => {
-            element.pageWatcher({pageSelected: true});
+            element[methodName](detail);
           });
     }
 
     onPageDeselect_(event, detail) {
       console.log('page deselected');
+      this.notifyWatchers(detail.item, 'page-watcher', {pageDeselected: true});
     }
 
   }
