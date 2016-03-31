@@ -12,6 +12,7 @@
   goog.provide('coligo.elements.DataService');
 
   goog.require('coligo.behaviors.StateMutator');
+  goog.require('coligo.scripts.Departments');
  
   coligo.elements.DataService = class DataService {
 
@@ -37,6 +38,10 @@
 
     fetchAllDepartments() {
       console.log('fetch departments data service called');
+      coligo.scripts.Departments.delay("getAll")
+          .then(response => {
+            this.set('state.departments', response);
+          });
     }
 
   }

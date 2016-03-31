@@ -40,6 +40,21 @@ coligo.scripts.CRUD = {
       goog.object.extend(existing, goog.object.unsafeClone(obj));
     }
     return null;
+  },
+
+  getAll: function() {
+    return goog.object.unsafeClone(this.list);
+  },
+
+  delay: function(funcName, ...args) {
+    args = args || [];
+    let promise = new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            resolve(this[funcName](...args));
+          }, 500);
+        });
+    return promise;
   }
 
 }

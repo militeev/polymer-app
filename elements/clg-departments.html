@@ -5,7 +5,7 @@
 <template>
   <ul>
     <template is="dom-repeat" items="[[list]]">
-      <li>[[item.departmentName]]</li>
+      <li>[[item.name]]</li>
     </template>
   </ul>
 </template>
@@ -33,7 +33,7 @@
     }
 
     ready() {
-      this.push('list', {departmentName: 'Accounting'});
+      this.push('list', {name: 'Accounting'});
     }
 
     pageWatcher(detail) {
