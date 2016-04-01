@@ -30,8 +30,13 @@
 
     get observers() {
       return [
-        'onRouteChanged_(state.route)'
+        'onRouteChanged_(state.route)',
+        'onAbcChanged_(state.abc)'
       ]
+    }
+
+    onAbcChanged_() {
+      console.log('abc changed', this.state.abc);
     }
 
     // Element setup goes in beforeRegister instead of createdCallback.
@@ -70,10 +75,11 @@
     attributeChanged() { }
 
     onRouteChanged_() {
-      console.log('Route changed: ' + this.get('state.route'));
+      if (!this.get('state.route.hash')) { return; }
+      console.log('Route changed: ' + this.get('state.route.hash'));
       for (let i = 0; i < this.menuItems.length; i++) {
         this.set(['menuItems', i, 'selected'],
-                 this.menuItems[i].url == this.get('state.route'));
+                 this.get('state.route.hash').includes(this.menuItems[i].url));
       }
     }
 

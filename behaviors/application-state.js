@@ -13,7 +13,10 @@ coligo.behaviors.ApplicationState = {
         departments: [],
         projects: [],
         employees: [],
-        route: ""
+        route: {
+          hash: '',
+          'yyy': 'zzz'
+        }
       }
     } 
 

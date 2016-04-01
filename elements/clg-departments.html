@@ -33,7 +33,10 @@
     beforeRegister() {
       this.is = 'clg-departments';
       this.properties = {
-        
+        route: {
+          type: Object,
+          observer: 'onRouteChanged_'
+        }
       }
     }
 
@@ -48,6 +51,10 @@
       }
       if (detail.pageDeselected) {
       }
+    }
+
+    onRouteChanged_(route) {
+      console.log('route changed: ', route);
     }
 
   }

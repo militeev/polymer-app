@@ -90,14 +90,13 @@
 
     // Define other lifecycle methods as you need.
     ready() { 
-      console.log('app attached');
     }
     attached() { }
     detached() { }
     attributeChanged() { }
 
     onPageSelect_(event, detail) {
-      console.log('page selected');
+//       console.log('page selected');
       this.notifyWatchers(detail.item, 'page-watcher', {pageSelected: true});
     }
 

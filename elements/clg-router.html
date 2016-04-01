@@ -25,13 +25,6 @@
     // Element setup goes in beforeRegister instead of createdCallback.
     beforeRegister() {
       this.is = 'clg-router';
-      this.properties = {
-        state: {
-          type: Object,
-          value: {},
-          notify: true
-        }
-      };
 
       this.pages = {
         "#departments": "departments",
@@ -47,13 +40,27 @@
 
     setRoute_() {
       let currentPage = window.location.hash.replace(/\/.*/, '');
-      this.set('state.route', window.location.hash);
+      this.set('state.route', {
+        hash: window.location.hash,
+        valueAt: function(index) {
+          this.hash.split('/')[index];
+        }
+      });
+//       this.set('state.route.hash', window.location.hash);
       this.set('state.currentPage', this.pages[currentPage]);
     }
 
     ready() { 
       window.addEventListener("hashchange", this.onHashChange_.bind(this));
+//       this.setRoute_();
+    }
+
+    attached() {
       this.setRoute_();
+//       this.set('state.route', {
+//         hash: window.location.hash
+//       });
+//       this.set('state.abc', {xxx: 'def'});
     }
 
   }

@@ -37,7 +37,7 @@
     }
 
     fetchAllDepartments() {
-      console.log('fetch departments data service called');
+//       console.log('fetch departments data service called');
       coligo.scripts.Departments.delay("getAll")
           .then(response => {
             this.set('state.departments', response);
