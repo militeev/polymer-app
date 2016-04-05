@@ -37,11 +37,24 @@
     }
 
     fetchAllDepartments() {
-//       console.log('fetch departments data service called');
       coligo.scripts.Departments.delay("getAll")
           .then(response => {
             this.set('state.departments', response);
           });
+    }
+
+    deleteDepartment(id) {
+      coligo.scripts.Departments.delay("delete", id)
+          .then(response => {
+            this.removeElement_('state.departments', id);
+          });
+    }
+
+    removeElement_(path, id) {
+      let index = this.get(path).findIndex(elem => elem.id == id);
+      if (index >= 0) {
+        this.splice(path, index, 1);
+      }
     }
 
   }

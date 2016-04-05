@@ -16,10 +16,13 @@ coligo.behaviors.ActionDispatcher = {
       case(coligo.scripts.actions.FETCH_DEPARTMENTS):
         this.callDataService_('fetchAllDepartments');
         break;
+      case(coligo.scripts.actions.DELETE_DEPARTMENT):
+        this.callDataService_('deleteDepartment', detail.id);
+        break;
     }
   },
 
-  callDataService_: function(method, args) {
+  callDataService_: function(method, ...args) {
     args = args || [];
     this.$['data-service'][method](...args);
   }

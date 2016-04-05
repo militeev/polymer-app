@@ -1,14 +1,21 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="clg-list-item.html">
 
 <dom-module id="clg-departments">
   
 <template>
   <ul>
-    <template is="dom-repeat" items="[[list]]">
+    <template is="dom-repeat" items="{{list}}">
       <li id="[[item.id]]">
+        <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#departments/[[item.id]]">[[item.name]]</a>
       </li>
     </template>
+    <br>
+    <input type="button" 
+           value="Delete" 
+           on-click="onDeleteClick"
+           disabled$="[[!selectedCount_]]">
   </ul>
 </template>
 
@@ -19,25 +26,29 @@
   goog.provide('coligo.elements.Departments');
 
   goog.require('coligo.scripts.actions');
+  goog.require('coligo.behaviors.StateAccessor');
+  goog.require('coligo.behaviors.ListView');
 
   coligo.elements.Departments = class Departments {
 
     get behaviors() {
       return [
-        coligo.behaviors.ListView
+        coligo.behaviors.ListView,
+        coligo.behaviors.StateAccessor
       ];
     }
 
-    // Define behaviors with a getter.
-    // Element setup goes in beforeRegister instead of createdCallback.
     beforeRegister() {
       this.is = 'clg-departments';
       this.properties = {
-        route: {
-          type: Object,
-          observer: 'onRouteChanged_'
+        selectedCount_: {
+          type: Number,
+          value: 0
         }
-      }
+      },
+      this.observers = [
+        'itemChanged_(list.*)'
+      ]
     }
 
     ready() {
@@ -53,8 +64,26 @@
       }
     }
 
-    onRouteChanged_(route) {
-      console.log('route changed: ', route);
+    onDeleteClick(event) {
+      console.log('delete clicked');
+      this.list.forEach(item => {
+          if (item.$selected) {
+            this.fire('dispatch-action', {
+            type: coligo.scripts.actions.DELETE_DEPARTMENT,
+            id: item.id
+          });
+        }
+      });
+    }
+
+    itemChanged_(change) {
+      if (change.path.endsWith('$selected')) {
+        let selectedCount = 0;
+        this.get('list').forEach(elem => {
+          selectedCount += elem.$selected ? 1 : 0;
+        });
+        this.selectedCount_ = selectedCount;
+      }
     }
 
   }
