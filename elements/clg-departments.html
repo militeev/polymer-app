@@ -3,10 +3,16 @@
 <dom-module id="clg-departments">
   
 <template>
+  <style is="custom-style">
+    a[selected] {
+      background: pink;
+    }
+  </style>
   <ul>
-    <template is="dom-repeat" items="[[list]]">
+    <template id="departments-template" is="dom-repeat" items="[[list]]">
       <li id="[[item.id]]">
-        <a href="#departments/[[item.id]]">[[item.name]]</a>
+        <a href="#departments/[[item.id]]"
+           selected$="[[isEqual_(item.id, selectedItemId_)]]">[[item.name]]</a>
       </li>
     </template>
   </ul>
@@ -36,6 +42,9 @@
         route: {
           type: Object,
           observer: 'onRouteChanged_'
+        },
+        selectedItemId_: {
+          type: String
         }
       }
     }
@@ -53,11 +62,18 @@
       }
     }
 
-    onRouteChanged_(route) {
-      console.log('route changed: ', route);
+    isEqual_(arg1, arg2) {
+      return arg1 == arg2;
     }
 
-  }
+    onRouteChanged_(route) {
+      console.log('route changed: ', route);
+      if (route.hash) {
+        this.selectedItemId_ = Number(route.valueAt(1));
+      }
+    }
+
+  };
 
   // Register the element using Polymer's constructor.
   Polymer(coligo.elements.Departments);

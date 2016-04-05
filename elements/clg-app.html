@@ -3,6 +3,7 @@
 <link rel="import" href="clg-menu.html">
 <link rel="import" href="clg-router.html">
 <link rel="import" href="clg-departments.html">
+<link rel="import" href="clg-department.html">
 <link rel="import" href="clg-data-service.html">
 
 <dom-module id="clg-app">
@@ -14,12 +15,10 @@
     }
     #menu {
       width: 150px;
-      height: 100%;
       border-right: gray 1px solid;
     }
-    #column1 {
+    #column1, #column2 {
       width: 250px;
-      height: 100%;
       border-right: gray 1px solid;
     }
   </style>
@@ -48,6 +47,9 @@
           <h3>Employees</h3>
         </section>
       </iron-pages>
+    </div>
+    <div id="column2">
+      <clg-department route="[[state.route]]"></clg-department>
     </div>
   </div>
   <clg-router state="{{state}}"></clg-router>
