@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-department">
+  
+<template>
+  <style is="custom-style">
+  </style>
+  <h3>Department: [[model.name]]</h3>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.Department');
+
+  goog.require('coligo.scripts.actions');
+
+  coligo.elements.Department = class Department {
+
+    get behaviors() {
+      return [
+//        coligo.behaviors.ModelView
+      ];
+    }
+
+    beforeRegister() {
+      this.is = 'clg-department';
+      this.properties = {
+        route: {
+          type: Object,
+          observer: 'onRouteChanged_'
+        },
+        id_: {
+          type: String
+        }
+      }
+    }
+
+    ready() {
+    }
+
+    onRouteChanged_(route) {
+      console.log('route changed: ', route);
+      if (route.hash) {
+        this.id_ = route.valueAt(1);
+      }
+      this.fire('dispatch-action', {
+        type: coligo.scripts.actions.FETCH_DEPARTMENT
+        id: this.id_
+      });
+
+    }
+
+  };
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.Department);
+
+</script>
+
+</dom-module>

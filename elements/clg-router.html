@@ -43,7 +43,7 @@
       this.set('state.route', {
         hash: window.location.hash,
         valueAt: function(index) {
-          this.hash.split('/')[index];
+          return this.hash.split('/')[index];
         }
       });
 //       this.set('state.route.hash', window.location.hash);
