@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="clg-employee-model.html">
 
-<dom-module id="clg-departments">
+<dom-module id="clg-employees">
   
 <template>
   <style is="custom-style">
@@ -9,11 +10,12 @@
     }
   </style>
   <ul>
-    <template id="departments-template" is="dom-repeat" items="{{list}}">
+    <template id="employees-template" is="dom-repeat" items="{{list}}">
+      <clg-employee-model model="[[item]]"></clg-employee-model>
       <li id="[[item.id]]">
         <input type="checkbox" checked="{{item.$selected::change}}">
-        <a href="#departments/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">[[item.name]]</a>
+        <a href="#employees/[[item.id]]"
+           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">[[item.$fullName]]</a>
       </li>
     </template>
     <br>
@@ -28,7 +30,7 @@
 
   'use strict';
 
-  goog.provide('coligo.elements.Departments');
+  goog.provide('coligo.elements.Employees');
 
   goog.require('coligo.scripts.actions');
   goog.require('coligo.behaviors.ListPage');
@@ -36,7 +38,7 @@
   goog.require('coligo.behaviors.Utils');
   goog.require('coligo.behaviors.ActionEmitter');
 
-  coligo.elements.Departments = class Departments {
+  coligo.elements.Employees = class Employees {
 
     get behaviors() {
       return [
@@ -48,9 +50,9 @@
     }
 
     beforeRegister() {
-      this.is = 'clg-departments';
-      this.fetchAction = coligo.scripts.actions.FETCH_DEPARTMENTS;
-      this.deleteAction = coligo.scripts.actions.DELETE_DEPARTMENT;
+      this.is = 'clg-employees';
+      this.fetchAction = coligo.scripts.actions.FETCH_EMPLOYEES;
+      this.deleteAction = coligo.scripts.actions.DELETE_EMPLOYEE;
       this.properties = {
 
       }
@@ -63,7 +65,7 @@
   };
 
   // Register the element using Polymer's constructor.
-  Polymer(coligo.elements.Departments);
+  Polymer(coligo.elements.Employees);
 
 </script>
 

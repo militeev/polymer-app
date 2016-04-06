@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-employee-model">
+  
+<template>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.EmployeeModel');
+
+  coligo.elements.EmployeeModel = class EmployeeModel {
+
+    get behaviors() {
+      return [
+      ];
+    }
+
+//     get observers() {
+//       return [
+//         'computeFullName(model.frist, model.last)'
+//       ]
+//     }
+
+    // Define behaviors with a getter.
+    // Element setup goes in beforeRegister instead of createdCallback.
+    beforeRegister() {
+      this.is = 'clg-employee-model';
+      this.properties = {
+        model: {
+          type: Object,
+        },
+      },
+      this.observers = [
+        'computeFullName(model.first, model.last)'
+      ]
+    }
+
+    computeFullName(first, last) {
+      this.set('model.$fullName', first + ' ' + last);
+    }
+
+    ready() {
+    }
+
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.EmployeeModel);
+
+</script>
+
+</dom-module>
+

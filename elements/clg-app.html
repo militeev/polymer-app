@@ -4,6 +4,7 @@
 <link rel="import" href="clg-router.html">
 <link rel="import" href="clg-departments.html">
 <link rel="import" href="clg-department.html">
+<link rel="import" href="clg-employees.html">
 <link rel="import" href="clg-data-service.html">
 
 <dom-module id="clg-app">
@@ -45,6 +46,10 @@
         </section>
         <section page="employees">
           <h3>Employees</h3>
+          <clg-employees list="[[state.employees]]"
+                           route="[[state.route]]"
+                           page-watcher>
+          </clg-employees>
         </section>
       </iron-pages>
     </div>

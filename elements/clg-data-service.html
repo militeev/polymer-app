@@ -13,7 +13,8 @@
 
   goog.require('coligo.behaviors.StateMutator');
   goog.require('coligo.scripts.Departments');
- 
+  goog.require('coligo.scripts.Employees');
+
   coligo.elements.DataService = class DataService {
 
     get behaviors() {
@@ -48,6 +49,20 @@
           .then(response => {
             this.removeElement_('state.departments', id);
           });
+    }
+
+    fetchAllEmployees() {
+      coligo.scripts.Employees.delay("getAll")
+        .then(response => {
+        this.set('state.employees', response);
+    });
+    }
+
+    deleteEmployee(id) {
+      coligo.scripts.Employees.delay("delete", id)
+        .then(response => {
+        this.removeElement_('state.employees', id);
+    });
     }
 
     removeElement_(path, id) {

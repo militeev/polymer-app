@@ -15,12 +15,13 @@
   goog.provide('coligo.elements.Department');
 
   goog.require('coligo.scripts.actions');
+  goog.require('coligo.behaviors.ActionEmitter');
 
   coligo.elements.Department = class Department {
 
     get behaviors() {
       return [
-//        coligo.behaviors.ModelView
+        coligo.behaviors.ActionEmitter
       ];
     }
 
@@ -45,8 +46,8 @@
       if (route.hash) {
         this.id_ = route.valueAt(1);
       }
-      this.fire('dispatch-action', {
-        type: coligo.scripts.actions.FETCH_DEPARTMENT
+      this.emitAction({
+        type: coligo.scripts.actions.FETCH_DEPARTMENT,
         id: this.id_
       });
 
