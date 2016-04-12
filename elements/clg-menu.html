@@ -76,7 +76,7 @@
 
     onRouteChanged_() {
       if (!this.get('state.route.hash')) { return; }
-      console.log('Route changed: ' + this.get('state.route.hash'));
+//       console.log('Route changed: ' + this.get('state.route.hash'));
       for (let i = 0; i < this.menuItems.length; i++) {
         this.set(['menuItems', i, 'selected'],
                  this.get('state.route.hash').includes(this.menuItems[i].url));

@@ -16,11 +16,20 @@ coligo.behaviors.ActionDispatcher = {
       case(coligo.scripts.actions.FETCH_DEPARTMENTS):
         this.callDataService_('fetchAllDepartments');
         break;
+      case(coligo.scripts.actions.FETCH_DEPARTMENT):
+        this.callDataService_('fetchDepartment', detail.id);
+        break;
       case(coligo.scripts.actions.DELETE_DEPARTMENT):
         this.callDataService_('deleteDepartment', detail.id);
         break;
       case(coligo.scripts.actions.FETCH_EMPLOYEES):
         this.callDataService_('fetchAllEmployees');
+        break;
+      case(coligo.scripts.actions.FETCH_EMPLOYEE):
+        this.callDataService_('fetchEmployee', detail.id);
+        break;
+      case(coligo.scripts.actions.UPDATE_EMPLOYEE):
+        this.callDataService_('updateEmployee', detail.model);
         break;
       case(coligo.scripts.actions.DELETE_EMPLOYEE):
         this.callDataService_('deleteEmployee', detail.id);

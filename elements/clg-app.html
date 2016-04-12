@@ -5,7 +5,9 @@
 <link rel="import" href="clg-departments.html">
 <link rel="import" href="clg-department.html">
 <link rel="import" href="clg-employees.html">
+<link rel="import" href="clg-employee.html">
 <link rel="import" href="clg-data-service.html">
+<link rel="import" href="clg-cache.html">
 
 <dom-module id="clg-app">
 
@@ -24,6 +26,7 @@
     }
   </style>
   <clg-data-service id="data-service" state="{{state}}"></clg-data-service>
+  <clg-cache id="cache" state="{{state}}"></clg-cache>
   <h2>My Application</h2>
   <div id="main">
     <div id="menu">
@@ -47,14 +50,20 @@
         <section page="employees">
           <h3>Employees</h3>
           <clg-employees list="[[state.employees]]"
-                           route="[[state.route]]"
-                           page-watcher>
+                         route="[[state.route]]"
+                         page-watcher>
           </clg-employees>
         </section>
       </iron-pages>
     </div>
     <div id="column2">
-      <clg-department route="[[state.route]]"></clg-department>
+      <clg-department route="[[state.route]]"
+                      model="[[state.department]]">
+      </clg-department>
+      <clg-employee id="employee-view"
+                    route="[[state.route]]"
+                    model="[[state.employee]]">
+      </clg-employee>
     </div>
   </div>
   <clg-router state="{{state}}"></clg-router>
@@ -67,7 +76,8 @@
 
   goog.provide('coligo.elements.Application');
 
-  goog.require('coligo.behaviors.ApplicationState');
+  goog.require('coligo.behaviors.StateAware');
+  goog.require('coligo.behaviors.CacheActionDispatcher');
   goog.require('coligo.behaviors.ActionDispatcher');
 
   let MyBehavior = {  };
@@ -77,10 +87,22 @@
     // Define behaviors with a getter.
     get behaviors() {
       return [
-        coligo.behaviors.ApplicationState,
+        coligo.behaviors.CacheActionDispatcher,
         coligo.behaviors.ActionDispatcher,
+        coligo.behaviors.StateAware
       ];
     }
+
+    // get listeners() {
+    //   return {
+    //     'state-changed': 'onStateChanged_'
+    //   }
+    // }
+
+    // onStateChanged_(event, detail) {
+    //   //this.$['employee-view'].fire('state-changed', detail, {bubbles: false});
+    //   this.notifyStateAwareChildren(detail.path, detail.value);
+    // }
 
     // Element setup goes in beforeRegister instead of createdCallback.
     beforeRegister() {

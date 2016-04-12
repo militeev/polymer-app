@@ -1,0 +1,115 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-employee">
+  
+<template>
+  <style is="custom-style">
+  </style>
+  <template is="dom-if" if="[[!hidden]]">
+    <h3>Employee: [[fullName]]</h3>
+    <p>First Name: <input type="text" value="{{model.first::input}}">
+    <p>Last Name: <input type="text" value="{{model.last::input}}">
+    <p>Sex: 
+    <select value="{{model.sex::change}}">
+      <template is="dom-repeat" items="[[sexOptions]]">
+        <option value="[[item.value]]"
+                selected$="{{areTwoValuesEqual(item.value, model.sex)}}">
+          [[item.label]]
+        </option>
+      </template>
+    </select>
+    <p>Department: 
+    <select value="{{model.departmentId::change}}">
+      <template is="dom-repeat" items="[[state.departments]]">
+        <option value="[[item.id]]"
+                selected$="{{areTwoValuesEqual(item.id, model.departmentId)}}">
+          [[item.name]]
+        </option>
+      </template>
+    </select>
+    <p><input type="button" value="Save" on-click="onSaveClick_">
+  </template>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.Employee');
+
+  goog.require('coligo.scripts.actions');
+  goog.require('coligo.behaviors.ModelView');
+  goog.require('coligo.behaviors.EmployeeModel');
+  goog.require('coligo.behaviors.ActionEmitter');
+  goog.require('coligo.behaviors.StateAware');
+  goog.require('coligo.behaviors.Utils');
+
+  coligo.elements.Employee = class Employee {
+
+    get behaviors() {
+      return [
+        coligo.behaviors.ActionEmitter,
+        coligo.behaviors.ModelView,
+        coligo.behaviors.EmployeeModel,
+        coligo.behaviors.Utils,
+        coligo.behaviors.StateAware
+      ];
+    }
+
+    beforeRegister() {
+      this.is = 'clg-employee';
+      this.modelPath = ''
+      this.properties = {
+        hidden: {
+          type: Boolean,
+          value: true,
+          observer: 'hiddenChanged_'
+        },
+        id_: {
+          type: String
+        },
+      }
+    }
+
+    get observers() {
+      return [
+        'routeChanged_(state.route)'
+      ]
+    }
+
+    hiddenChanged_(hidden) {
+      if (!hidden) {
+        this.emitAction({
+          type: coligo.scripts.actions.FETCH_DEPARTMENTS,
+        });
+      }
+    }
+
+    routeChanged_(route) {
+      if (route.hash) {
+        this.id_ = route.valueAt(1);
+        this.set('hidden', !(route.valueAt(0) == '#employees' && this.id_));
+      }
+      if (!this.get('hidden') && this.id_) {
+        this.emitAction({
+          type: coligo.scripts.actions.FETCH_EMPLOYEE,
+          id: this.id_
+        });
+      }
+    }
+
+    onSaveClick_(event) {
+      this.emitAction({
+        type: coligo.scripts.actions.UPDATE_EMPLOYEE,
+        model: this.get('model')
+      });
+    }
+
+  };
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.Employee);
+
+</script>
+
+</dom-module>

@@ -9,9 +9,17 @@ coligo.behaviors.StateMutator = {
      */
     state: {
       type: Object,
-      notify: true
-    } 
+      notify: true,
+    }
 
+  },
+
+  observers: [
+    'stateChanged_(state.*)'
+  ],
+
+  stateChanged_(change) {
+//     console.log('s m: ', change);
   }
   
 }

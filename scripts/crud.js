@@ -35,11 +35,12 @@ coligo.scripts.CRUD = {
   },
 
   update: function(obj) {
-    let existing = this.get(obj.id);
-    if (existing) {
-      goog.object.extend(existing, goog.object.unsafeClone(obj));
+    for (let elem of this.list) {
+      if (elem.id == obj.id) {
+        goog.object.extend(elem, goog.object.unsafeClone(obj));
+        return goog.object.unsafeClone(elem);
+      }
     }
-    return null;
   },
 
   getAll: function() {

@@ -5,7 +5,9 @@
 <template>
   <style is="custom-style">
   </style>
-  <h3>Department: [[model.name]]</h3>
+  <template is="dom-if" if="[[!hidden]]">
+    <h3>Department: [[model.name]]</h3>
+  </template>
 </template>
 
 <script>
@@ -15,13 +17,15 @@
   goog.provide('coligo.elements.Department');
 
   goog.require('coligo.scripts.actions');
+  goog.require('coligo.behaviors.ModelView');
   goog.require('coligo.behaviors.ActionEmitter');
 
   coligo.elements.Department = class Department {
 
     get behaviors() {
       return [
-        coligo.behaviors.ActionEmitter
+        coligo.behaviors.ActionEmitter,
+        coligo.behaviors.ModelView
       ];
     }
 
@@ -31,6 +35,10 @@
         route: {
           type: Object,
           observer: 'onRouteChanged_'
+        },
+        hidden: {
+          type: Boolean,
+          value: true
         },
         id_: {
           type: String
@@ -42,15 +50,16 @@
     }
 
     onRouteChanged_(route) {
-      console.log('route changed: ', route);
       if (route.hash) {
         this.id_ = route.valueAt(1);
+         this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
       }
-      this.emitAction({
-        type: coligo.scripts.actions.FETCH_DEPARTMENT,
-        id: this.id_
-      });
-
+      if (!this.get('hidden')) {
+        this.emitAction({
+          type: coligo.scripts.actions.FETCH_DEPARTMENT,
+          id: this.id_
+        });
+      }
     }
 
   };

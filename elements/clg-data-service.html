@@ -12,6 +12,7 @@
   goog.provide('coligo.elements.DataService');
 
   goog.require('coligo.behaviors.StateMutator');
+  goog.require('coligo.behaviors.ActionEmitter');
   goog.require('coligo.scripts.Departments');
   goog.require('coligo.scripts.Employees');
 
@@ -19,7 +20,8 @@
 
     get behaviors() {
       return [
-        coligo.behaviors.StateMutator
+        coligo.behaviors.StateMutator,
+        coligo.behaviors.ActionEmitter
       ];
     }
 
@@ -44,6 +46,13 @@
           });
     }
 
+    fetchDepartment(id) {
+      coligo.scripts.Departments.delay("get", id)
+          .then(response => {
+            this.set('state.department', response);
+          });
+    }
+
     deleteDepartment(id) {
       coligo.scripts.Departments.delay("delete", id)
           .then(response => {
@@ -53,16 +62,32 @@
 
     fetchAllEmployees() {
       coligo.scripts.Employees.delay("getAll")
-        .then(response => {
-        this.set('state.employees', response);
-    });
+          .then(response => {
+            this.set('state.employees', response);
+            this.emitAction(this.actions.EMPLOYEE_FETCHED, {response});
+          });
+    }
+
+    fetchEmployee(id) {
+      coligo.scripts.Employees.delay("get", id)
+          .then(response => {
+            this.set('state.employee', response);
+            this.emitAction(this.actions.EMPLOYEE_FETCHED, {response});
+          });
     }
 
     deleteEmployee(id) {
       coligo.scripts.Employees.delay("delete", id)
-        .then(response => {
-        this.removeElement_('state.employees', id);
-    });
+          .then(response => {
+            this.removeElement_('state.employees', id);
+          });
+    }
+
+    updateEmployee(model) {
+      coligo.scripts.Employees.delay("update", model)
+          .then(response => {
+            this.set('state.employee', response);
+          });
     }
 
     removeElement_(path, id) {

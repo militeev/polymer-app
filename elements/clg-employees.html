@@ -1,5 +1,4 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="clg-employee-model.html">
 
 <dom-module id="clg-employees">
   
@@ -11,11 +10,11 @@
   </style>
   <ul>
     <template id="employees-template" is="dom-repeat" items="{{list}}">
-      <clg-employee-model model="[[item]]"></clg-employee-model>
       <li id="[[item.id]]">
         <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#employees/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">[[item.$fullName]]</a>
+           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">
+             [[item.last]], [[item.first]]</a>
       </li>
     </template>
     <br>

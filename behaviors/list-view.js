@@ -40,6 +40,7 @@ coligo.behaviors.ListView = {
 
   pageWatcher(detail) {
     if (this.fetchAction && detail.pageSelected) {
+      this.set('list', []);
       this.emitAction({
         type: this.fetchAction
       });

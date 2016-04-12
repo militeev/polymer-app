@@ -32,6 +32,19 @@
         model: {
           type: Object,
         },
+        fullName: {
+          type: String,
+          computed: 'computeFullName(model.first, model.last)',
+          notify: true
+        },
+        sexOptions: {
+          type: Array,
+          value: [
+            {value: 'm', label: 'Male'},
+            {value: 'f', label: 'Female'}
+          ],
+          readOnly: true
+        }
       },
       this.observers = [
         'computeFullName(model.first, model.last)'
@@ -39,7 +52,8 @@
     }
 
     computeFullName(first, last) {
-      this.set('model.$fullName', first + ' ' + last);
+      //this.set('model.$fullName', first + ' ' + last);
+      return first + ' ' + last;
     }
 
     ready() {

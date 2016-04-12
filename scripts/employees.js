@@ -8,19 +8,23 @@ coligo.scripts.Employees = {
   list: [{
     id: 201,
     first: 'Estelle',
-    last: 'Shimizu'
+    last: 'Shimizu',
+    sex: 'f',
   }, {
     id: 202,
     first: 'Garry',
-    last: 'Chmiel'
+    last: 'Chmiel',
+    sex: 'm'
   }, {
     id: 203,
     first: 'Myrtice',
-    last: 'Luckow'
+    last: 'Luckow',
+    sex: 'f',
   }, {
     id: 204,
     first: 'Michal',
-    last: 'Pressman'
+    last: 'Pressman',
+    sex: 'm',
   }, {
     id: 205,
     first: 'Janay',
