@@ -17,6 +17,10 @@ coligo.behaviors.ListPage = {
 
   },
 
+  observers: [
+    'routeChanged_(state.route)'
+  ],
+
   routeChanged_(route) {
 //     console.log('route changed: ', route);
     if (route.hash) {

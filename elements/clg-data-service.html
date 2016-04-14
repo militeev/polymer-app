@@ -75,12 +75,12 @@
     }
 
     fetchDepartmentEmployees(departmentId) {
-      this.path = this.path || 'state.employees';
-      this.set(this.path, []);
+      let path = this.path || 'state.employees';
+      this.set(path, []);
       let filterFunc = employee => employee.departmentId == departmentId;
       coligo.scripts.Employees.delay("getAll", filterFunc)
           .then(response => {
-            this.set(this.path, response);
+            this.set(path, response);
             this.emitAction({
               type: this.actions.EMPLOYEE_FETCHED, 
               response
@@ -119,6 +119,15 @@
               response
             });
           });
+    }
+
+    fetchAllProjects() {
+      let path = this.path || 'state.projects';
+      this.set(path, []);
+      coligo.scripts.Projects.delay("getAll")
+        .then(response => {
+        this.set(path, response);
+    });
     }
 
     removeElement_(path, id) {

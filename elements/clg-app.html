@@ -6,6 +6,7 @@
 <link rel="import" href="clg-department.html">
 <link rel="import" href="clg-employees.html">
 <link rel="import" href="clg-employee.html">
+<link rel="import" href="clg-projects.html">
 <link rel="import" href="clg-data-service.html">
 <link rel="import" href="clg-cache.html">
 
@@ -46,6 +47,9 @@
         </section>
         <section page="projects">
           <h3>Projects</h3>
+          <clg-projects list="[[state.projects]]"
+                        page-watcher>
+          </clg-projects>
         </section>
         <section page="employees">
           <h3>Employees</h3>

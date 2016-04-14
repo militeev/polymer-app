@@ -1,17 +1,17 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="clg-department">
+<dom-module id="clg-project">
   
 <template>
   <style is="custom-style">
   </style>
   <template is="dom-if" if="[[!hidden]]">
-    <h3>Department: [[model.name]]</h3>
+    <h3>Project: [[model.name]]</h3>
     <p>Name: <input type="text" value="{{model.name::input}}">
-    <p>Employees:<br>
+    <p>Tasks:<br>
     <ul>
-      <template is="dom-repeat" items="[[state.departmentEmployees]]">
-        <li>[[item.last]], [[item.first]]
+      <template is="dom-repeat" items="[[model.tasks]]">
+        <li>[[item.name]]
       </template>
     </ul>
   </template>
@@ -21,14 +21,14 @@
 
   'use strict';
 
-  goog.provide('coligo.elements.Department');
+  goog.provide('coligo.elements.Project');
 
   goog.require('coligo.scripts.actions');
   goog.require('coligo.behaviors.ModelView');
   goog.require('coligo.behaviors.ActionEmitter');
   goog.require('coligo.behaviors.StateAware');
 
-  coligo.elements.Department = class Department {
+  coligo.elements.Project = class Project {
 
     get behaviors() {
       return [
@@ -57,14 +57,10 @@
       }
     }
 
-    ready() {
-      console.log('ready');
-    }
-
     routeChanged_(route) {
       if (route.hash) {
         this.id_ = route.valueAt(1);
-        this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
+        this.set('hidden', !(route.valueAt(0) == '#projects' && this.id_));
         if (!this.get('hidden')) {
           this.emitAction({
             type: coligo.scripts.actions.FETCH_DEPARTMENT,

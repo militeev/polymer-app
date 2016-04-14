@@ -42,7 +42,8 @@ coligo.behaviors.ListView = {
     if (this.fetchAction && detail.pageSelected) {
       this.set('list', []);
       this.emitAction({
-        type: this.fetchAction
+        type: this.fetchAction,
+        path: this.listPath
       });
     }
     if (detail.pageDeselected) {
@@ -67,7 +68,7 @@ coligo.behaviors.ListView = {
 
   onDispatchAction_: function(event, details) {
     if (this.listPath) {
-      details.listPath = this.listPath;
+      details.path = this.listPath;
     }
   },
 
