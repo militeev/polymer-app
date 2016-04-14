@@ -12,6 +12,7 @@ coligo.behaviors.ActionDispatcher = {
 
   onDispatchAction_: function(event, detail) {
     console.log('Dispatching action: ', detail);
+    this.$['data-service'].path = detail.path;
     switch (detail.type) {
       case(coligo.scripts.actions.FETCH_DEPARTMENTS):
         this.callDataService_('fetchAllDepartments');
@@ -23,7 +24,12 @@ coligo.behaviors.ActionDispatcher = {
         this.callDataService_('deleteDepartment', detail.id);
         break;
       case(coligo.scripts.actions.FETCH_EMPLOYEES):
-        this.callDataService_('fetchAllEmployees');
+        if (detail.departmentId) {
+          this.callDataService_('fetchDepartmentEmployees', 
+                                detail.departmentId);
+        } else {
+          this.callDataService_('fetchAllEmployees');
+        }
         break;
       case(coligo.scripts.actions.FETCH_EMPLOYEE):
         this.callDataService_('fetchEmployee', detail.id);

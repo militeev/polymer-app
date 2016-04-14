@@ -7,6 +7,13 @@
   </style>
   <template is="dom-if" if="[[!hidden]]">
     <h3>Department: [[model.name]]</h3>
+    <p>Name: <input type="text" value="{{model.name::input}}">
+    <p>Employees:<br>
+    <ul>
+      <template is="dom-repeat" items="[[state.departmentEmployees]]">
+        <li>[[item.last]], [[item.first]]
+      </template>
+    </ul>
   </template>
 </template>
 
@@ -19,23 +26,27 @@
   goog.require('coligo.scripts.actions');
   goog.require('coligo.behaviors.ModelView');
   goog.require('coligo.behaviors.ActionEmitter');
+  goog.require('coligo.behaviors.StateAware');
 
   coligo.elements.Department = class Department {
 
     get behaviors() {
       return [
         coligo.behaviors.ActionEmitter,
-        coligo.behaviors.ModelView
+        coligo.behaviors.ModelView,
+        coligo.behaviors.StateAware
       ];
+    }
+
+    get observers() {
+      return [
+        'routeChanged_(state.route)',
+      ]
     }
 
     beforeRegister() {
       this.is = 'clg-department';
       this.properties = {
-        route: {
-          type: Object,
-          observer: 'onRouteChanged_'
-        },
         hidden: {
           type: Boolean,
           value: true
@@ -49,7 +60,7 @@
     ready() {
     }
 
-    onRouteChanged_(route) {
+    routeChanged_(route) {
       if (route.hash) {
         this.id_ = route.valueAt(1);
          this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
@@ -58,6 +69,11 @@
         this.emitAction({
           type: coligo.scripts.actions.FETCH_DEPARTMENT,
           id: this.id_
+        });
+        this.emitAction({
+          type: coligo.scripts.actions.FETCH_EMPLOYEES,
+          departmentId: this.id_,
+          path: 'state.departmentEmployees'
         });
       }
     }

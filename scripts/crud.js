@@ -43,8 +43,9 @@ coligo.scripts.CRUD = {
     }
   },
 
-  getAll: function() {
-    return goog.object.unsafeClone(this.list);
+  getAll: function(filterFunc) {
+    let result = filterFunc ? this.list.filter(filterFunc) : this.list;
+    return goog.object.unsafeClone(result);
   },
 
   delay: function(funcName, ...args) {

@@ -1,0 +1,71 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="clg-projects">
+  
+<template>
+  <style is="custom-style">
+    a[selected] {
+      background: lightblue;
+    }
+  </style>
+  <ul>
+    <template id="projects-template" is="dom-repeat" items="{{list}}">
+      <li id="[[item.id]]">
+        <input type="checkbox" checked="{{item.$selected::change}}">
+        <a href="#projects/[[item.id]]"
+           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">
+             [[item.name]]</a>
+      </li>
+    </template>
+    <br>
+    <input type="button" 
+           value="Delete" 
+           on-click="onDeleteClick"
+           disabled$="[[!selectedCount_]]">
+  </ul>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.Projects');
+
+  goog.require('coligo.scripts.actions');
+  goog.require('coligo.behaviors.ListPage');
+  goog.require('coligo.behaviors.ListView');
+  goog.require('coligo.behaviors.Utils');
+  goog.require('coligo.behaviors.ActionEmitter');
+
+  coligo.elements.Projects = class Projects {
+
+    get behaviors() {
+      return [
+        coligo.behaviors.ListPage,
+        coligo.behaviors.ActionEmitter,
+        coligo.behaviors.ListView,
+        coligo.behaviors.Utils,
+      ];
+    }
+
+    beforeRegister() {
+      this.is = 'clg-projects';
+      this.fetchAction = coligo.scripts.actions.FETCH_PROJECTS;
+      this.deleteAction = coligo.scripts.actions.DELETE_PROJECT;
+      this.properties = {
+
+      }
+    }
+
+    onDeleteClick(event) {
+      this.fire('delete-selected');
+    }
+
+  };
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.Projects);
+
+</script>
+
+</dom-module>

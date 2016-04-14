@@ -32,6 +32,9 @@
           type: Object,
           value: {},
           notify: true
+        },
+        path: {
+          type: String
         }
       };
     }
@@ -64,7 +67,24 @@
       coligo.scripts.Employees.delay("getAll")
           .then(response => {
             this.set('state.employees', response);
-            this.emitAction(this.actions.EMPLOYEE_FETCHED, {response});
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
+          });
+    }
+
+    fetchDepartmentEmployees(departmentId) {
+      this.path = this.path || 'state.employees';
+      this.set(this.path, []);
+      let filterFunc = employee => employee.departmentId == departmentId;
+      coligo.scripts.Employees.delay("getAll", filterFunc)
+          .then(response => {
+            this.set(this.path, response);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
           });
     }
 
@@ -72,7 +92,10 @@
       coligo.scripts.Employees.delay("get", id)
           .then(response => {
             this.set('state.employee', response);
-            this.emitAction(this.actions.EMPLOYEE_FETCHED, {response});
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
           });
     }
 
@@ -80,6 +103,10 @@
       coligo.scripts.Employees.delay("delete", id)
           .then(response => {
             this.removeElement_('state.employees', id);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_REMOVED, 
+              id
+            });
           });
     }
 
@@ -87,6 +114,10 @@
       coligo.scripts.Employees.delay("update", model)
           .then(response => {
             this.set('state.employee', response);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
           });
     }
 
@@ -96,7 +127,6 @@
         this.splice(path, index, 1);
       }
     }
-
   }
 
   // Register the element using Polymer's constructor.

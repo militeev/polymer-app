@@ -24,7 +24,7 @@
     beforeRegister() {
       this.is = 'clg-cache';
       this.properties = {
-        state: {
+        cache: {
           type: Object,
           value: {
             employees: {}
@@ -54,7 +54,7 @@
     gotEmployee(response) {
       if (goog.isArray(response)) {
         response.forEach(element => {
-          this.addToCache('employees', element);
+          this.addToCache_('employees', element);
         })
       } else {
         this.addToCache_('employees', response);
@@ -62,11 +62,11 @@
     }
 
     addToCache_(fieldName, object) {
-      this.get(fieldName)[object.id] = object;
+      this.get('cache.' + fieldName)[object.id] = object;
     }
 
     getCached(fieldName, modelPath, id) {
-      let model = this.get(fieldName)[id];
+      let model = this.get('cache.' + fieldName)[id];
       if (model) {
         this.set(modelPath, goog.object.unsafeClone(model));
         return true;
