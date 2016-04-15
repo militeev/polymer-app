@@ -6,6 +6,10 @@ coligo.behaviors.ModelView = {
 
   properties: {
 
+    model: {
+      type: Object,
+    },
+
     modelPath: {
       type: String,
     },

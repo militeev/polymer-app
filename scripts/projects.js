@@ -7,7 +7,20 @@ coligo.scripts.Projects = {
 
   list: [{
     id: 1001,
-    name: 'Scarecrow Appropriate'
+    name: 'Scarecrow Appropriate',
+    tasks: [{
+      name: 'Find Scarecrow',
+      size: 's',
+      owner: 204
+    }, {
+      name: 'Define Appropriate',
+      size: 'm',
+      owner: 205
+    }, {
+      name: 'Make Scarecrow Appropriate',
+      size: 'l',
+      owner: 207
+    }]
   }, {
     id: 1002,
     name: 'Forsaken Donut'
