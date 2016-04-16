@@ -48,37 +48,46 @@
       });
     }
 
-    getArray(path, statePath) {
+    get(path, statePath, onSuccessAction, transform) {
       this.ajaxCall(path, 'GET', response => {
-        this.set(statePath, goog.object.getValues(response.response));
+        this.set(statePath, transform ? 
+            transform(response.response) : response.response);
+        this.emitAction({
+          type: onSuccessAction,
+          response: response.response
+        });
       });
     }
 
-    delete(path, onDeleteAction) {
-      this.ajaxCall(path, 'DELETE', response => {
+    getElement(path, statePath, onSuccessAction) {
+      this.get(path, statePath, onSuccessAction);
+    }
+
+    getArray(path, statePath, onSuccessAction) {
+      this.get(path, statePath, onSuccessAction, goog.object.getValues);
+    }
+
+    deleteElement(path, id, onSuccessAction) {
+      this.ajaxCall(path + '/' + id, 'DELETE', response => {
         this.emitAction({
-          type: onDeleteAction,
+          type: onSuccessAction,
           id
         });
       });
     }
 
     fetchAllDepartments() {
-      this.getArray('departments', 'state.departments');
-    }
-
-    fetchDepartment(id) {
-      coligo.scripts.Departments.delay("get", id)
-          .then(response => {
-            this.set('state.department', response);
-          });
+      this.getArray('departments', 'state.departments', 
+                    this.actions.DEPARTMENT_FETCHED);
     }
 
     deleteDepartment(id) {
-      coligo.scripts.Departments.delay("delete", id)
-          .then(response => {
-            this.removeElement_('state.departments', id);
-          });
+      this.deleteElement('departments', id, this.actions.DEPARTMENT_DELETED);
+    }
+
+    fetchDepartment(id) {
+      this.getArray('departments/' + id, 'state.department', 
+                    this.actions.DEPARTMENT_FETCHED);
     }
 
     fetchAllEmployees() {
