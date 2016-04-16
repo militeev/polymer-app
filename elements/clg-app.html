@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="clg-menu.html">
 <link rel="import" href="clg-router.html">
 <link rel="import" href="clg-departments.html">
@@ -8,6 +9,7 @@
 <link rel="import" href="clg-employee.html">
 <link rel="import" href="clg-projects.html">
 <link rel="import" href="clg-data-service.html">
+<link rel="import" href="clg-firebase-data-service.html">
 <link rel="import" href="clg-cache.html">
 
 <dom-module id="clg-app">
@@ -26,7 +28,26 @@
       border-right: gray 1px solid;
     }
   </style>
-  <clg-data-service id="data-service" state="{{state}}"></clg-data-service>
+
+  <iron-ajax
+    id="myajax"
+    auto
+    url="https://resplendent-heat-528.firebaseio.com/users/1.json"
+    handle-as="json"
+    last-response="{{ajaxResponse}}"
+    on-response="handleResponse"
+    debounce-duration="300"></iron-ajax>
+  <iron-ajax
+    id="myajax2"
+    auto
+    content-type="application/json"
+    url="https://resplendent-heat-528.firebaseio.com/users/2.json"
+    method="PUT"
+    body="[[ajaxRequest]]"
+    handle-as="json"
+    debounce-duration="300"></iron-ajax>
+
+  <clg-firebase-data-service id="data-service" state="{{state}}"></clg-firebase-data-service>
   <clg-cache id="cache" state="{{state}}"></clg-cache>
   <h2>My Application</h2>
   <div id="main">
@@ -117,6 +138,15 @@
         symbols: {
           type: Array,
           value: () => []
+        },
+        ajaxResponse: {
+          type: Object
+        },
+        ajaxRequest: {
+          type: Object,
+          value: {
+            name: "Jack Sparrow"
+          }
         }
       };
     }
@@ -144,6 +174,10 @@
     onPageDeselect_(event, detail) {
       console.log('page deselected');
       this.notifyWatchers(detail.item, 'page-watcher', {pageDeselected: true});
+    }
+
+    handleResponse(event, response) {
+      console.log(this.ajaxResponse);
     }
 
   }

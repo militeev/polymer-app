@@ -1,0 +1,164 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="clg-firebase-data-service">
+  
+<template>
+</template>
+
+<script>
+
+  'use strict';
+
+  goog.provide('coligo.elements.FirebaseDataService');
+
+  goog.require('coligo.behaviors.StateMutator');
+  goog.require('coligo.behaviors.ActionEmitter');
+  goog.require('coligo.scripts.Departments');
+  goog.require('coligo.scripts.Employees');
+
+  coligo.elements.FirebaseDataService = class FirebaseDataService {
+
+    get behaviors() {
+      return [
+        coligo.behaviors.StateMutator,
+        coligo.behaviors.ActionEmitter
+      ];
+    }
+
+    beforeRegister() {
+      this.baseUrl = 'https://resplendent-heat-528.firebaseio.com/';
+      this.is = 'clg-firebase-data-service';
+      this.properties = {
+        path: {
+          type: String
+        }
+      };
+    }
+
+    ready() { 
+    }
+
+    ajaxCall(path, method, callback) {
+      let ironAjax = document.createElement('iron-ajax');
+      ironAjax.url = this.baseUrl + path + '.json';
+      ironAjax.handleAs = 'json';
+      ironAjax.generateRequest().completes.then(response => {
+        callback(response);
+      });
+    }
+
+    getArray(path, statePath) {
+      this.ajaxCall(path, 'GET', response => {
+        this.set(statePath, goog.object.getValues(response.response));
+      });
+    }
+
+    delete(path, onDeleteAction) {
+      this.ajaxCall(path, 'DELETE', response => {
+        this.emitAction({
+          type: onDeleteAction,
+          id
+        });
+      });
+    }
+
+    fetchAllDepartments() {
+      this.getArray('departments', 'state.departments');
+    }
+
+    fetchDepartment(id) {
+      coligo.scripts.Departments.delay("get", id)
+          .then(response => {
+            this.set('state.department', response);
+          });
+    }
+
+    deleteDepartment(id) {
+      coligo.scripts.Departments.delay("delete", id)
+          .then(response => {
+            this.removeElement_('state.departments', id);
+          });
+    }
+
+    fetchAllEmployees() {
+      coligo.scripts.Employees.delay("getAll")
+          .then(response => {
+            this.set('state.employees', response);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
+          });
+    }
+
+    fetchDepartmentEmployees(departmentId) {
+      let path = this.path || 'state.employees';
+      this.set(path, []);
+      let filterFunc = employee => employee.departmentId == departmentId;
+      coligo.scripts.Employees.delay("getAll", filterFunc)
+          .then(response => {
+            this.set(path, response);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
+          });
+    }
+
+    fetchEmployee(id) {
+      coligo.scripts.Employees.delay("get", id)
+          .then(response => {
+            this.set('state.employee', response);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
+          });
+    }
+
+    deleteEmployee(id) {
+      coligo.scripts.Employees.delay("delete", id)
+          .then(response => {
+            this.removeElement_('state.employees', id);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_REMOVED, 
+              id
+            });
+          });
+    }
+
+    updateEmployee(model) {
+      coligo.scripts.Employees.delay("update", model)
+          .then(response => {
+            this.set('state.employee', response);
+            this.emitAction({
+              type: this.actions.EMPLOYEE_FETCHED, 
+              response
+            });
+          });
+    }
+
+    fetchAllProjects() {
+      let path = this.path || 'state.projects';
+      this.set(path, []);
+      coligo.scripts.Projects.delay("getAll")
+        .then(response => {
+        this.set(path, response);
+    });
+    }
+
+    removeElement_(path, id) {
+      let index = this.get(path).findIndex(elem => elem.id == id);
+      if (index >= 0) {
+        this.splice(path, index, 1);
+      }
+    }
+  }
+
+  // Register the element using Polymer's constructor.
+  Polymer(coligo.elements.FirebaseDataService);
+
+</script>
+
+</dom-module>

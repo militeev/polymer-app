@@ -24,7 +24,7 @@ coligo.behaviors.ListPage = {
   routeChanged_(route) {
 //     console.log('route changed: ', route);
     if (route.hash) {
-      this.selectedItemId_ = Number(route.valueAt(1));
+      this.selectedItemId_ = route.valueAt(1);
     }
   }
 
