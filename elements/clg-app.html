@@ -8,6 +8,7 @@
 <link rel="import" href="clg-employees.html">
 <link rel="import" href="clg-employee.html">
 <link rel="import" href="clg-projects.html">
+<link rel="import" href="clg-project.html">
 <link rel="import" href="clg-data-service.html">
 <link rel="import" href="clg-firebase-data-service.html">
 <link rel="import" href="clg-cache.html">
@@ -89,6 +90,8 @@
                     route="[[state.route]]"
                     model="[[state.employee]]">
       </clg-employee>
+      <clg-project model="[[state.project]]">
+      </clg-project>
     </div>
   </div>
   <clg-router state="{{state}}"></clg-router>
@@ -101,6 +104,7 @@
 
   goog.provide('coligo.elements.Application');
 
+  goog.require('coligo.behaviors.ApplicationState');
   goog.require('coligo.behaviors.StateAware');
   goog.require('coligo.behaviors.CacheActionDispatcher');
   goog.require('coligo.behaviors.ActionDispatcher');
@@ -112,9 +116,10 @@
     // Define behaviors with a getter.
     get behaviors() {
       return [
+        coligo.behaviors.StateAware,
+        coligo.behaviors.ApplicationState,
         coligo.behaviors.CacheActionDispatcher,
         coligo.behaviors.ActionDispatcher,
-        coligo.behaviors.StateAware
       ];
     }
 

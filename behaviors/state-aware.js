@@ -9,15 +9,6 @@ coligo.behaviors.StateAware = {
      */
     state: {
       type: Object,
-      value: {
-        departments: [],
-        projects: [],
-        employees: [],
-        route: {
-          hash: '',
-          'yyy': 'zzz'
-        }
-      }
     },
 
     stateAware: {
@@ -34,7 +25,9 @@ coligo.behaviors.StateAware = {
   ],
 
   attached: function() {
-    this.state = document.querySelector('clg-app').state;
+    if (!this.state) {
+      this.state = document.querySelector('clg-app').state;
+    }
   },
 
   stateChanged_: function(change) {

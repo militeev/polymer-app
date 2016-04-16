@@ -43,6 +43,9 @@ coligo.behaviors.ActionDispatcher = {
       case(coligo.scripts.actions.FETCH_PROJECTS):
         this.callDataService_('fetchAllProjects');
         break;
+      case(coligo.scripts.actions.FETCH_PROJECT):
+        this.callDataService_('fetchProject', detail.id);
+        break;
     }
   },
 

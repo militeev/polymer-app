@@ -130,6 +130,13 @@
     });
     }
 
+    fetchProject(id) {
+      coligo.scripts.Projects.delay("get", id)
+          .then(response => {
+            this.set('state.project', response);
+          });
+    }
+
     removeElement_(path, id) {
       let index = this.get(path).findIndex(elem => elem.id == id);
       if (index >= 0) {

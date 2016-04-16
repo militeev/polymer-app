@@ -16,6 +16,18 @@ coligo.behaviors.ApplicationState = {
         route: {
           hash: '',
           'yyy': 'zzz'
+        },
+        catalogs: {
+          TASK_SIZES: [{
+            value: 's',
+            label: 'Small'
+          }, {
+            value: 'm',
+            label: 'Medium'
+          }, {
+            value: 'l',
+            label: 'Large'
+          }]
         }
       }
     } 
