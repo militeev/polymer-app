@@ -14,6 +14,7 @@
 
   goog.require('coligo.behaviors.StateMutator');
   goog.require('coligo.behaviors.ActionEmitter');
+  goog.require('coligo.behaviors.Utils');
   goog.require('coligo.scripts.Departments');
   goog.require('coligo.scripts.Employees');
 
@@ -22,7 +23,8 @@
     get behaviors() {
       return [
         coligo.behaviors.StateMutator,
-        coligo.behaviors.ActionEmitter
+        coligo.behaviors.ActionEmitter,
+        coligo.behaviors.Utils
       ];
     }
 
@@ -39,19 +41,21 @@
     ready() { 
     }
 
-    ajaxCall(path, method, callback) {
+    ajaxCall(path, properties, callback) {
       let ironAjax = document.createElement('iron-ajax');
+      Object.assign(ironAjax, properties || {});
       ironAjax.url = this.baseUrl + path + '.json';
       ironAjax.handleAs = 'json';
+      ironAjax.contentType = "application/json";
       ironAjax.generateRequest().completes.then(response => {
         callback(response);
       });
     }
 
-    get(path, statePath, onSuccessAction, transform) {
-      this.ajaxCall(path, 'GET', response => {
-        this.set(statePath, transform ? 
-            transform(response.response) : response.response);
+    get(path, onSuccessAction, transform) {
+      let statePath = this.path;
+      this.ajaxCall(path, {method: 'GET'}, response => {
+        this.set(statePath, transform ? transform(response.response) : response.response);
         this.emitAction({
           type: onSuccessAction,
           response: response.response
@@ -59,16 +63,32 @@
       });
     }
 
-    getElement(path, statePath, onSuccessAction) {
-      this.get(path, statePath, onSuccessAction);
+    put(path, model, onSuccessAction) {
+      let statePath = this.path;
+      this.ajaxCall(path, {
+        method: 'PUT',
+        body: model
+      }, response => {
+        if (statePath) {
+          this.set(statePath, response);
+        }
+        this.emitAction({
+          type: onSuccessAction,
+          response: response.response
+        });
+      });
     }
 
-    getArray(path, statePath, onSuccessAction) {
-      this.get(path, statePath, onSuccessAction, goog.object.getValues);
+    getElement(path, onSuccessAction) {
+      this.get(path, onSuccessAction);
+    }
+
+    getArray(path, onSuccessAction) {
+      this.get(path, onSuccessAction, goog.object.getValues);
     }
 
     deleteElement(path, id, onSuccessAction) {
-      this.ajaxCall(path + '/' + id, 'DELETE', response => {
+      this.ajaxCall(path + '/' + id, {method: 'DELETE'}, response => {
         this.emitAction({
           type: onSuccessAction,
           id
@@ -77,8 +97,7 @@
     }
 
     fetchAllDepartments() {
-      this.getArray('departments', 'state.departments', 
-                    this.actions.DEPARTMENT_FETCHED);
+      this.getArray('departments', this.actions.DEPARTMENT_FETCHED);
     }
 
     deleteDepartment(id) {
@@ -86,8 +105,17 @@
     }
 
     fetchDepartment(id) {
-      this.getArray('departments/' + id, 'state.department', 
-                    this.actions.DEPARTMENT_FETCHED);
+      this.getArray('departments/' + id, this.actions.DEPARTMENT_FETCHED);
+    }
+
+    saveDepartment(model) {
+      if (!model.id) {
+        model.id = this.utils.generateUUID();
+      }
+      console.log(model.id);
+      this.put('departments/' + model.id, model);
+//      this.getArray('departments/' + id,
+//                    [this.actions.DEPARTMENT_FETCHED]);
     }
 
     fetchAllEmployees() {
@@ -131,7 +159,7 @@
           .then(response => {
             this.removeElement_('state.employees', id);
             this.emitAction({
-              type: this.actions.EMPLOYEE_REMOVED, 
+              type: this.actions.EMPLOYEE_DELETED,
               id
             });
           });

@@ -8,7 +8,7 @@ coligo.behaviors.ActionEmitter = {
     this.fire('dispatch-action', details);
   },
 
-  ready: function() {
+  beforeRegister: function() {
     this.actions = coligo.scripts.actions;
   }
   

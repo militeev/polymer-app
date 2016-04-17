@@ -6,12 +6,7 @@ coligo.behaviors.ListPage = {
 
   properties: {
 
-    route: {
-      type: Object,
-      observer: 'routeChanged_'
-    },
-
-    selectedItemId_: {
+    highlightedItemId_: {
       type: Number
     }
 
@@ -24,7 +19,7 @@ coligo.behaviors.ListPage = {
   routeChanged_(route) {
 //     console.log('route changed: ', route);
     if (route.hash) {
-      this.selectedItemId_ = route.valueAt(1);
+      this.highlightedItemId_ = route.valueAt(1);
     }
   }
 

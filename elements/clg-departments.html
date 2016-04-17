@@ -1,10 +1,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="clg-department.html">
 
 <dom-module id="clg-departments">
   
 <template>
   <style is="custom-style">
-    a[selected] {
+    a[highlighted] {
       background: pink;
     }
   </style>
@@ -13,15 +14,18 @@
       <li id="[[item.id]]">
         <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#departments/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">[[item.name]]</a>
+           highlighted$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">[[item.name]]</a>
       </li>
     </template>
     <br>
-    <input type="button" 
-           value="Delete" 
-           on-click="onDeleteClick"
-           disabled$="[[!selectedCount_]]">
   </ul>
+  <input type="button"
+         value="Delete"
+         on-click="onDeleteClick"
+         disabled$="[[!selectedCount_]]">
+  <input type="button"
+         value="Add"
+         on-click="onAddClick_">
 </template>
 
 <script>
@@ -30,9 +34,9 @@
 
   goog.provide('coligo.elements.Departments');
 
-  goog.require('coligo.scripts.actions');
   goog.require('coligo.behaviors.ListPage');
   goog.require('coligo.behaviors.ListView');
+  goog.require('coligo.behaviors.StateAware');
   goog.require('coligo.behaviors.Utils');
   goog.require('coligo.behaviors.ActionEmitter');
 
@@ -42,6 +46,7 @@
       return [
         coligo.behaviors.ListPage,
         coligo.behaviors.ActionEmitter,
+        coligo.behaviors.StateAware,
         coligo.behaviors.ListView,
         coligo.behaviors.Utils,
       ];
@@ -49,8 +54,8 @@
 
     beforeRegister() {
       this.is = 'clg-departments';
-      this.fetchAction = coligo.scripts.actions.FETCH_DEPARTMENTS;
-      this.deleteAction = coligo.scripts.actions.DELETE_DEPARTMENT;
+      this.fetchAction = this.actions.FETCH_DEPARTMENTS;
+      this.deleteAction = this.actions.DELETE_DEPARTMENT;
       this.properties = {
 
       }
@@ -58,6 +63,10 @@
 
     onDeleteClick(event) {
       this.fire('delete-selected');
+    }
+
+    onAddClick_() {
+      window.location.hash = '#departments/new'
     }
 
   };

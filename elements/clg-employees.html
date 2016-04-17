@@ -13,7 +13,7 @@
       <li id="[[item.id]]">
         <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#employees/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">
+           selected$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
              [[item.last]], [[item.first]]</a>
       </li>
     </template>

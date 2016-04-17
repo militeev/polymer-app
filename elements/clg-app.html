@@ -1,6 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="clg-menu.html">
 <link rel="import" href="clg-router.html">
 <link rel="import" href="clg-departments.html">
@@ -30,24 +29,6 @@
     }
   </style>
 
-  <iron-ajax
-    id="myajax"
-    auto
-    url="https://resplendent-heat-528.firebaseio.com/users/1.json"
-    handle-as="json"
-    last-response="{{ajaxResponse}}"
-    on-response="handleResponse"
-    debounce-duration="300"></iron-ajax>
-  <iron-ajax
-    id="myajax2"
-    auto
-    content-type="application/json"
-    url="https://resplendent-heat-528.firebaseio.com/users/2.json"
-    method="PUT"
-    body="[[ajaxRequest]]"
-    handle-as="json"
-    debounce-duration="300"></iron-ajax>
-
   <clg-firebase-data-service id="data-service" state="{{state}}"></clg-firebase-data-service>
   <clg-cache id="cache" state="{{state}}"></clg-cache>
   <h2>My Application</h2>
@@ -62,9 +43,7 @@
                   on-iron-deselect="onPageDeselect_">
         <section page="departments">
           <h3>Departments</h3>
-          <clg-departments list="[[state.departments]]"
-                           route="[[state.route]]"
-                           page-watcher>
+          <clg-departments page-watcher>
           </clg-departments>
         </section>
         <section page="projects">
@@ -83,8 +62,7 @@
       </iron-pages>
     </div>
     <div id="column2">
-      <clg-department route="[[state.route]]"
-                      model="[[state.department]]">
+      <clg-department>
       </clg-department>
       <clg-employee id="employee-view"
                     route="[[state.route]]"
@@ -144,15 +122,6 @@
           type: Array,
           value: () => []
         },
-        ajaxResponse: {
-          type: Object
-        },
-        ajaxRequest: {
-          type: Object,
-          value: {
-            name: "Jack Sparrow"
-          }
-        }
       };
     }
 
@@ -181,9 +150,18 @@
       this.notifyWatchers(detail.item, 'page-watcher', {pageDeselected: true});
     }
 
-    handleResponse(event, response) {
-      console.log(this.ajaxResponse);
+    createElementState(element) {
+      let elementState = {
+        index: this.get('state.elements').length,
+        elementName: element.localName,
+        getPath: function() {
+          return 'state.elements.#' + this.index;
+        }
+      };
+      this.push('state.elements', elementState);
+      return elementState;
     }
+
 
   }
 

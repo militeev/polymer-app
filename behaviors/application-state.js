@@ -10,6 +10,7 @@ coligo.behaviors.ApplicationState = {
     state: {
       type: Object,
       value: {
+        elements: [],
         departments: [],
         projects: [],
         employees: [],

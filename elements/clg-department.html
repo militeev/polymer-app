@@ -10,10 +10,11 @@
     <p>Name: <input type="text" value="{{model.name::input}}">
     <p>Employees:<br>
     <ul>
-      <template is="dom-repeat" items="[[state.departmentEmployees]]">
+      <template is="dom-repeat" items="[[departmentEmployees]]">
         <li>[[item.last]], [[item.first]]
       </template>
     </ul>
+    <p><input type="button" value="Save" on-click="onSaveClick_">
   </template>
 </template>
 
@@ -53,6 +54,9 @@
         },
         id_: {
           type: String
+        },
+        departmentEmployees: {
+          type: Array
         }
       }
     }
@@ -65,17 +69,28 @@
         this.id_ = route.valueAt(1);
         this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
         if (!this.get('hidden')) {
-          this.emitAction({
-            type: coligo.scripts.actions.FETCH_DEPARTMENT,
-            id: this.id_
-          });
-          this.emitAction({
-            type: coligo.scripts.actions.FETCH_EMPLOYEES,
-            departmentId: this.id_,
-            path: 'state.departmentEmployees'
-          });
+          if (this.id_ == 'new') {
+            this.model = {};
+          } else {
+            this.emitAction({
+              type: coligo.scripts.actions.FETCH_DEPARTMENT,
+              id: this.id_
+            });
+            this.emitAction({
+              type: coligo.scripts.actions.FETCH_EMPLOYEES,
+              departmentId: this.id_,
+              path: 'departmentEmployees'
+            });
+          }
         }
       }
+    }
+
+    onSaveClick_() {
+      this.emitAction({
+        type: this.actions.SAVE_DEPARTMENT,
+        model: this.model
+      });
     }
 
   };

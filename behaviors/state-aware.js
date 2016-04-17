@@ -16,6 +16,10 @@ coligo.behaviors.StateAware = {
       value: true,
       reflectToAttribute: true,
       readOnly: true
+    },
+
+    elementState: {
+      type: Object
     }
 
   },
@@ -24,14 +28,34 @@ coligo.behaviors.StateAware = {
     'stateChanged_(state.*)'
   ],
 
+  listeners: {
+    'dispatch-action': 'onDispatchAction_',
+  },
+
   attached: function() {
+    let app = document.querySelector('clg-app');
     if (!this.state) {
-      this.state = document.querySelector('clg-app').state;
+      this.state = app.get('state');
     }
+    this.elementState = app.createElementState(this);
   },
 
   stateChanged_: function(change) {
+    if (this.elementState) {
+      if (change.path.startsWith(this.elementState.getPath()) &&
+          change.path.length > this.elementState.getPath().length) {
+        let pathToNotify = change.path.slice(this.elementState.getPath().length + 1);
+        this.notifyPath(pathToNotify, change.value, true);
+      }
+    }
     this.notifyStateAwareChildren(change.path, change.value);
+  },
+
+  onDispatchAction_: function(event, detail) {
+    if (detail.path && !detail.path.startsWith('state.')) {
+      detail.path = this.get('elementState').getPath() + '.' + detail.path;
+    }
+    console.log('dispatch action: ' + detail.path);
   },
 
   notifyStateAwareChildren: function(path, value) {

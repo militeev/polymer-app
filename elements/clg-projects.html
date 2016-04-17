@@ -4,16 +4,16 @@
   
 <template>
   <style is="custom-style">
-    a[selected] {
+    a[highlighted] {
       background: pink;
     }
   </style>
   <ul>
     <template id="projects-template" is="dom-repeat" items="{{list}}">
       <li id="[[item.id]]">
-        <input type="checkbox" checked="{{item.$selected::change}}">
+        <input type="checkbox" checked="{{item.$highlighted::change}}">
         <a href="#projects/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, selectedItemId_)]]">
+           selected$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
              [[item.name]]</a>
       </li>
     </template>
@@ -42,7 +42,7 @@
 
     get behaviors() {
       return [
-         coligo.behaviors.StateAware,
+        coligo.behaviors.StateAware,
         coligo.behaviors.ListPage,
         coligo.behaviors.ActionEmitter,
         coligo.behaviors.ListView,

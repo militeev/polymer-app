@@ -104,7 +104,7 @@
           .then(response => {
             this.removeElement_('state.employees', id);
             this.emitAction({
-              type: this.actions.EMPLOYEE_REMOVED, 
+              type: this.actions.EMPLOYEE_DELETED,
               id
             });
           });

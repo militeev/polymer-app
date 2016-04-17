@@ -14,11 +14,6 @@ coligo.behaviors.ListView = {
       value: () => []
     },
 
-    listPath: {
-      type: String,
-      value: ''
-    },
-
     selectedCount_: {
       type: Number,
       value: 0
@@ -27,7 +22,6 @@ coligo.behaviors.ListView = {
   },
 
   listeners: {
-    'dispatch-action': 'onDispatchAction_',
     'delete-selected': 'onDeleteSelected_'
   },
 
@@ -40,13 +34,13 @@ coligo.behaviors.ListView = {
 
   pageWatcher(detail) {
     if (this.fetchAction && detail.pageSelected) {
-      this.set('list', []);
       this.emitAction({
         type: this.fetchAction,
-        path: this.listPath
+        path: 'list'
       });
     }
     if (detail.pageDeselected) {
+
     }
   },
 
@@ -66,12 +60,6 @@ coligo.behaviors.ListView = {
     this.selectedCount_ = selectedCount;
   },
 
-  onDispatchAction_: function(event, details) {
-    if (this.listPath) {
-      details.path = this.listPath;
-    }
-  },
-
   onDeleteSelected_(event) {
     console.log('on delete selected');
     if (this.deleteAction) {
@@ -84,7 +72,7 @@ coligo.behaviors.ListView = {
         }
       });
     } else {
-      console.warn('delete action is not defined')
+      console.warn('delete action is not defined');
     }
   }
 
