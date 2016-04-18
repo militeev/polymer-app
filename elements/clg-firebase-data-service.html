@@ -55,11 +55,13 @@
     get(path, onSuccessAction, transform) {
       let statePath = this.path;
       this.ajaxCall(path, {method: 'GET'}, response => {
-        this.set(statePath, transform ? transform(response.response) : response.response);
-        this.emitAction({
-          type: onSuccessAction,
-          response: response.response
-        });
+        if (response.response) {
+          this.set(statePath, transform ? transform(response.response) : response.response);
+          this.emitAction({
+            type: onSuccessAction,
+            response: response.response
+          });
+        }
       });
     }
 
@@ -70,7 +72,7 @@
         body: model
       }, response => {
         if (statePath) {
-          this.set(statePath, response);
+          this.set(statePath, response.response);
         }
         this.emitAction({
           type: onSuccessAction,
@@ -105,7 +107,7 @@
     }
 
     fetchDepartment(id) {
-      this.getArray('departments/' + id, this.actions.DEPARTMENT_FETCHED);
+      this.getElement('departments/' + id, this.actions.DEPARTMENT_FETCHED);
     }
 
     saveDepartment(model) {

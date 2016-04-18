@@ -42,6 +42,7 @@
     get observers() {
       return [
         'routeChanged_(state.route)',
+        'modelChanged_(model)'
       ]
     }
 
@@ -71,26 +72,31 @@
         if (!this.get('hidden')) {
           if (this.id_ == 'new') {
             this.model = {};
-          } else {
+          } else if (!this.model || this.id_ != this.model.id) {
             this.emitAction({
               type: coligo.scripts.actions.FETCH_DEPARTMENT,
-              id: this.id_
+              id: this.id_,
+              path: 'model'
             });
-            this.emitAction({
-              type: coligo.scripts.actions.FETCH_EMPLOYEES,
-              departmentId: this.id_,
-              path: 'departmentEmployees'
-            });
+//             this.emitAction({
+//               type: coligo.scripts.actions.FETCH_EMPLOYEES,
+//               departmentId: this.id_,
+//               path: 'departmentEmployees'
+//             });
           }
         }
       }
     }
 
+    modelChanged_(model) {
+      console.log('department changed');
+      if (model.id && model.id != this.id_) {
+        window.location.hash = '#departments/' + model.id;
+      }
+    }
+
     onSaveClick_() {
-      this.emitAction({
-        type: this.actions.SAVE_DEPARTMENT,
-        model: this.model
-      });
+      this.saveModel(this.actions.SAVE_DEPARTMENT);
     }
 
   };

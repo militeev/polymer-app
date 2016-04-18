@@ -32,18 +32,6 @@ coligo.behaviors.ListView = {
   ready: function() {
   },
 
-  pageWatcher(detail) {
-    if (this.fetchAction && detail.pageSelected) {
-      this.emitAction({
-        type: this.fetchAction,
-        path: 'list'
-      });
-    }
-    if (detail.pageDeselected) {
-
-    }
-  },
-
   itemChanged_(change) {
     if (change.path == 'list' ||
         change.path == 'list.splices' ||

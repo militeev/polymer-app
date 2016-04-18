@@ -16,4 +16,12 @@ coligo.behaviors.ModelView = {
 
   },
 
+  saveModel(action) {
+    this.emitAction({
+      type: action,
+      model: this.model,
+      path: 'model'
+    });
+  }
+
 }
