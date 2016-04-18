@@ -16,6 +16,10 @@ coligo.behaviors.ListPage = {
     'routeChanged_(state.route)'
   ],
 
+  beforeRegister() {
+    this.registeredActionDispatchers = [];
+  },
+
   routeChanged_(route) {
 //     console.log('route changed: ', route);
     if (route.hash) {
@@ -32,23 +36,28 @@ coligo.behaviors.ListPage = {
       this.registerActionDispatchers();
     }
     if (detail.pageDeselected) {
-      this.unregisterActionDispatchers();
+      this.unRegisterActionDispatchers();
     }
   },
 
   registerActionDispatchers() {
-    if (actionDispatchers) {
-      actionDispatchers.forEach(ad => {
-        document.querySelector('clg-app').addActionDispatcher((event, detail => {
-          detail.statePath = this.get('elementState').getPath();
-          ad.dispatchAction(detail.type, detail);
-        }))
+    if (this.actionDispatchers) {
+      let application = document.querySelector('clg-app');
+      this.actionDispatchers.forEach(ad => {
+        let actionDispatcher = event => {
+          event.detail.statePath = this.get('elementState').getPath();
+          ad.dispatchAction.call(application, event.detail.type, event.detail);
+        };
+        application.addActionDispatcher(actionDispatcher);
+        this.registeredActionDispatchers.push(actionDispatcher);
       });
     }
   },
 
-  unregisterActionDispatchers() {
-
+  unRegisterActionDispatchers() {
+    this.registeredActionDispatchers.forEach(ad => {
+      document.querySelector('clg-app').removeActionDispatcher(ad);
+    })
   }
 
 }

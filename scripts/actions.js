@@ -23,5 +23,7 @@ coligo.scripts.actions = {
   EMPLOYEE_DELETED: Symbol('EMPLOYEE_DELETED'),
   DEPARTMENT_DELETED: Symbol('DEPARTMENT_DELETED'),
 
+  DEPARTMENT_ADDED: Symbol('DEPARTMENT_ADDED'),
+
 };
 

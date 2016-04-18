@@ -111,13 +111,12 @@
     }
 
     saveDepartment(model) {
+      let isNew = !model.id;
       if (!model.id) {
         model.id = this.utils.generateUUID();
       }
-      console.log(model.id);
-      this.put('departments/' + model.id, model);
-//      this.getArray('departments/' + id,
-//                    [this.actions.DEPARTMENT_FETCHED]);
+      let onSuccessAction = isNew ? this.actions.DEPARTMENT_ADDED : this.actions.DEPARTMENT_FETCHED;
+      this.put('departments/' + model.id, model, onSuccessAction);
     }
 
     fetchAllEmployees() {
