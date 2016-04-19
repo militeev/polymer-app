@@ -17,6 +17,9 @@ coligo.scripts.DepartmentsActionDispatcher = {
       if (index >= 0) {
         this.splice(listPath, index, 1);
       }
+      if (this.get('state.route.hash') == '#departments/' + options.id) {
+        window.location.hash = 'departments';
+      }
     }
     if (action == coligo.scripts.actions.DEPARTMENT_ADDED) {
       this.push(listPath, options.response);
