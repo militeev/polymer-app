@@ -10,7 +10,7 @@
     <h3>Project: [[model.name]]</h3>
     <p>Name: <input type="text" value="{{model.name::input}}">
     <template is="dom-repeat" items="[[model.tasks]]">
-      <clg-task model="[[item]]"></clg-task>
+      <clg-task model="[[item]]" all-employees="[[allEmployees_]]"></clg-task>
     </template>
     <p>
     <input type="button" value="Add Task" on-click="onAddTaskClick_">
@@ -41,15 +41,37 @@
       ];
     }
 
+    get observers() {
+      return [
+        'hiddenChanged_(hidden_)'
+      ]
+    }
+
     beforeRegister() {
       this.is = 'clg-project';
       this.route = 'projects';
       this.fetchAction = this.actions.FETCH_PROJECT;
       this.properties = {
+        allEmployees_: {
+          type: Array
+        }
+      }
+    }
+
+    hiddenChanged_(hidden_) {
+      if (!hidden_) {
+        this.emitAction({
+          type: coligo.scripts.actions.FETCH_EMPLOYEES,
+          path: 'allEmployees_'
+        });
       }
     }
 
     onAddTaskClick_() {
+//      this.emitAction({
+//        type: coligo.scripts.actions.ADD_PROJECT_TASK,
+//        path: 'model.tasks'
+//      });
       if (!this.get('model.tasks')) {
         this.set('model.tasks', []);
       }

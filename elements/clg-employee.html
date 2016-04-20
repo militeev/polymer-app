@@ -4,6 +4,9 @@
   
 <template>
   <style is="custom-style">
+    .errors {
+      color: red;
+    }
   </style>
   <template is="dom-if" if="[[!hidden_]]">
     <h3>Employee: [[fullName]]</h3>
@@ -27,6 +30,12 @@
         </option>
       </template>
     </select>
+    <p>
+    <ul class="errors">
+      <template is="dom-repeat" items="[[status.validationErrors]]">
+        <li>[[item]]</li>
+      </template>
+    </ul>
     <p><input type="button" value="Save" on-click="onSaveClick_">
   </template>
 </template>
@@ -75,7 +84,6 @@
         'hiddenChanged_(hidden_)'
       ]
     }
-
 
     hiddenChanged_(hidden_) {
       if (!hidden_) {

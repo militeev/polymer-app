@@ -55,24 +55,6 @@
     ready() {
     }
 
-//    routeChanged_(route) {
-//      if (route.hash) {
-//        this.id_ = route.valueAt(1);
-//        this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
-//        if (!this.get('hidden')) {
-//          if (this.id_ == 'new') {
-//            this.model = {};
-//          } else if (!this.model || this.id_ != this.model.id) {
-//            this.emitAction({
-//              type: coligo.scripts.actions.FETCH_DEPARTMENT,
-//              id: this.id_,
-//              path: 'model'
-//            });
-//          }
-//        }
-//      }
-//    }
-
     afterRouteChanged() {
       this.emitAction({
        type: coligo.scripts.actions.FETCH_EMPLOYEES,

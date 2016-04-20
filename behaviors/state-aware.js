@@ -51,10 +51,16 @@ coligo.behaviors.StateAware = {
     this.notifyStateAwareChildren(change.path, change.value);
   },
 
+  enhancePath_(path) {
+    return (path && !path.startsWith('state.')) ?
+        (this.get('elementState').getPath() + '.' + path) : path;
+  },
+
   onDispatchAction_: function(event, detail) {
-    if (detail.path && !detail.path.startsWith('state.')) {
-      detail.path = this.get('elementState').getPath() + '.' + detail.path;
-    }
+    detail.path = this.enhancePath_(detail.path);
+    detail.modelPath = this.enhancePath_(detail.modelPath);
+    detail.listPath = this.enhancePath_(detail.listPath);
+    detail.statusPath = this.enhancePath_(detail.statusPath);
     console.log('dispatch action: ' + detail.path);
   },
 

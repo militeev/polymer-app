@@ -1,8 +1,9 @@
 goog.provide('coligo.behaviors.ActionDispatcher');
 
 goog.require('coligo.scripts.actions');
+goog.require('coligo.behaviors.ActionEmitter');
 
-coligo.behaviors.ActionDispatcher = {
+coligo.behaviors.ActionDispatcher = [{
 
   listeners: {
 
@@ -38,7 +39,14 @@ coligo.behaviors.ActionDispatcher = {
         this.callDataService_('fetchEmployee', detail.id);
         break;
       case(coligo.scripts.actions.SAVE_EMPLOYEE):
-        this.callDataService_('saveEmployee', detail.model);
+        this.emitAction({
+          type: coligo.scripts.actions.VALIDATE_EMPLOYEE,
+          model: detail.model,
+          statusPath: detail.statusPath
+        });
+        if (this.get([detail.statusPath, 'isValid'])) {
+          this.callDataService_('saveEmployee', detail.model);
+        }
         break;
       case(coligo.scripts.actions.DELETE_EMPLOYEE):
         this.callDataService_('deleteEmployee', detail.id);
@@ -63,4 +71,4 @@ coligo.behaviors.ActionDispatcher = {
     this.$['data-service'][method](...args);
   }
 
-}
+}, coligo.behaviors.ActionEmitter];

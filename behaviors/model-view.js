@@ -10,18 +10,34 @@ coligo.behaviors.ModelView = {
       type: Object,
     },
 
+    status: {
+      type: Object,
+    },
+
     modelPath: {
       type: String,
     },
 
   },
 
+  observers: [
+    'modelViewModelChanged_(model.*)'
+  ],
+
   saveModel(action) {
     this.emitAction({
       type: action,
       model: this.model,
-      path: 'model'
+      modelPath: 'model',
+      path: 'model',
+      statusPath: 'status'
     });
+  },
+
+  modelViewModelChanged_(change) {
+    if (change.path == 'model') {
+      this.set([this.get('elementState').getPath(), 'status'], {validationErrors: []});    
+    }
   }
 
 }
