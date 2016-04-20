@@ -32,6 +32,10 @@ coligo.scripts.Projects = {
     name: 'Scarlet Peasant'
   }],
 
+  getTaskCount(model) {
+    return model.tasks ? model.tasks.length : 0;
+  }
+
 }
 
 goog.object.extend(coligo.scripts.Projects, coligo.scripts.CRUD);

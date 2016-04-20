@@ -35,7 +35,7 @@ coligo.behaviors.ModelView = {
   },
 
   modelViewModelChanged_(change) {
-    if (change.path == 'model') {
+    if (change.path == 'model' && this.get('elementState')) {
       this.set([this.get('elementState').getPath(), 'status'], {validationErrors: []});    
     }
   }

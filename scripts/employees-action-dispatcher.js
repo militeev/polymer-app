@@ -21,7 +21,6 @@ coligo.scripts.EmployeesActionDispatcher = {
       this.push(listPath, options.response);
     }
     if (action == coligo.scripts.actions.VALIDATE_EMPLOYEE) {
-      console.log('validating employee');
       coligo.scripts.EmployeesActionDispatcher.
           validateEmployee.call(this, options.model, options.statusPath);
     }

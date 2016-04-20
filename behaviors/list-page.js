@@ -13,14 +13,14 @@ coligo.behaviors.ListPage = {
   },
 
   observers: [
-    'routeChanged_(state.route)'
+    'listPageRouteChanged_(state.route)'
   ],
 
   beforeRegister() {
     this.registeredActionDispatchers = [];
   },
 
-  routeChanged_(route) {
+  listPageRouteChanged_(route) {
 //     console.log('route changed: ', route);
     if (route.hash) {
       this.highlightedItemId_ = route.valueAt(1) || '';
@@ -60,4 +60,4 @@ coligo.behaviors.ListPage = {
     })
   }
 
-}
+};

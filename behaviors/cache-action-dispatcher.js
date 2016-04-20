@@ -19,6 +19,14 @@ coligo.behaviors.CacheActionDispatcher = {
 
   onDispatchCacheAction_: function(event, detail) {
     console.log('Cache dispatching action: ', detail);
+    let actionType = detail.type.toString().
+        replace('Symbol(', '').replace(')', '');
+    if (actionType.startsWith('FETCH_') && detail.id) {
+      if (this.cache[detail.id]) {
+        return this.cache[detail.id];
+        event.stopImmediatePropagation();
+      }
+    }
     switch (detail.type) {
       case(coligo.scripts.actions.FETCH_DEPARTMENT):
         if (this.callCache_('getDepartment', detail.id)) {
