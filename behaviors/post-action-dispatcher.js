@@ -21,7 +21,7 @@ coligo.behaviors.PostActionDispatcher = {
         this.traverseState('state', 'update', {data: detail.response});      
       }
     } else if (actionType.endsWith('_DELETED')) {
-      console.log('deleted');
+      this.traverseState('state', 'delete', {id: detail.id});
     } else if (actionType.endsWith('_ADDED')) {
 
     }
@@ -36,19 +36,24 @@ coligo.behaviors.PostActionDispatcher = {
 //   },
 
   traverseState(path, action, detail) {
-    console.log('traversing state: ' + path);
+    // console.log('traversing state: ' + path);
     let obj = this.get(path);
+    if (obj.id && action == 'update' && obj.id == detail.data.id) {
+      this.set(path, detail.data);
+      return;
+    }
+    if (goog.isArray(obj) && action == 'delete') {
+      for (let i = obj.length - 1; i >= 0; i--) {
+        if (obj[i].id == detail.id) {
+          this.splice(path, i, 1);
+        }
+      }
+    }
     for (let key of Object.keys(obj)) {
       let field = obj[key];
       if (goog.isObject(field) && !goog.isFunction(field)) {
-        if (action == 'update') {
-          if (field.id == detail.data.id) {
-            console.log('about to update ' + field.id);
-            continue;
-          }
-        }
-        this.traverseState(path + '.' + key);
-      } 
+        this.traverseState(path + '.' + key, action, detail);
+      }
     }
   }
 

@@ -11,9 +11,6 @@ coligo.behaviors.ApplicationState = {
       type: Object,
       value: {
         elements: [],
-        // departments: [],
-        // projects: [],
-        // employees: [],
         route: {
           hash: '',
           'yyy': 'zzz'

@@ -5,7 +5,7 @@
 <template>
   <style is="custom-style">
   </style>
-  <template is="dom-if" if="[[!hidden]]">
+  <template is="dom-if" if="[[!hidden_]]">
     <h3>Department: [[model.name]]</h3>
     <p>Name: <input type="text" value="{{model.name::input}}">
     <p>Employees:<br>
@@ -26,6 +26,7 @@
 
   goog.require('coligo.scripts.actions');
   goog.require('coligo.behaviors.ModelView');
+  goog.require('coligo.behaviors.DetailsPage');
   goog.require('coligo.behaviors.ActionEmitter');
   goog.require('coligo.behaviors.StateAware');
 
@@ -35,27 +36,16 @@
       return [
         coligo.behaviors.ActionEmitter,
         coligo.behaviors.ModelView,
-        coligo.behaviors.StateAware
+        coligo.behaviors.StateAware,
+        coligo.behaviors.DetailsPage
       ];
-    }
-
-    get observers() {
-      return [
-        'routeChanged_(state.route)',
-        'modelChanged_(model)'
-      ]
     }
 
     beforeRegister() {
       this.is = 'clg-department';
+      this.route = 'departments';
+      this.fetchAction = this.actions.FETCH_DEPARTMENT;
       this.properties = {
-        hidden: {
-          type: Boolean,
-          value: true
-        },
-        id_: {
-          type: String
-        },
         departmentEmployees: {
           type: Array
         }
@@ -65,34 +55,30 @@
     ready() {
     }
 
-    routeChanged_(route) {
-      if (route.hash) {
-        this.id_ = route.valueAt(1);
-        this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
-        if (!this.get('hidden')) {
-          if (this.id_ == 'new') {
-            this.model = {};
-          } else if (!this.model || this.id_ != this.model.id) {
-            this.emitAction({
-              type: coligo.scripts.actions.FETCH_DEPARTMENT,
-              id: this.id_,
-              path: 'model'
-            });
-//             this.emitAction({
-//               type: coligo.scripts.actions.FETCH_EMPLOYEES,
-//               departmentId: this.id_,
-//               path: 'departmentEmployees'
-//             });
-          }
-        }
-      }
-    }
+//    routeChanged_(route) {
+//      if (route.hash) {
+//        this.id_ = route.valueAt(1);
+//        this.set('hidden', !(route.valueAt(0) == '#departments' && this.id_));
+//        if (!this.get('hidden')) {
+//          if (this.id_ == 'new') {
+//            this.model = {};
+//          } else if (!this.model || this.id_ != this.model.id) {
+//            this.emitAction({
+//              type: coligo.scripts.actions.FETCH_DEPARTMENT,
+//              id: this.id_,
+//              path: 'model'
+//            });
+//          }
+//        }
+//      }
+//    }
 
-    modelChanged_(model) {
-      console.log('department changed');
-      if (model.id && model.id != this.id_) {
-        window.location.hash = '#departments/' + model.id;
-      }
+    afterRouteChanged() {
+      this.emitAction({
+       type: coligo.scripts.actions.FETCH_EMPLOYEES,
+       departmentId: this.id_,
+       path: 'departmentEmployees'
+      });
     }
 
     onSaveClick_() {

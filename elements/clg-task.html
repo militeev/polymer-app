@@ -18,7 +18,7 @@
   </select>
   <p>Owner: 
   <select value="{{model.owner::change}}">
-    <template is="dom-repeat" items="[[state.employees]]">
+    <template is="dom-repeat" items="[[allEmployees]]">
       <option value="[[item.id]]"
               selected$="{{areTwoValuesEqual(item.id, model.owner)}}">
         [[item.last]], [[item.first]]
@@ -56,18 +56,6 @@
       }
     }
 
-    routeChanged_(route) {
-      if (route.hash) {
-        this.id_ = route.valueAt(1);
-        this.set('hidden', !(route.valueAt(0) == '#projects' && this.id_));
-        if (!this.get('hidden')) {
-          this.emitAction({
-            type: coligo.scripts.actions.FETCH_PROJECT,
-            id: this.id_
-          });
-        }
-      }
-    }
   };
 
   // Register the element using Polymer's constructor.

@@ -5,7 +5,7 @@
 <template>
   <style is="custom-style">
   </style>
-  <template is="dom-if" if="[[!hidden]]">
+  <template is="dom-if" if="[[!hidden_]]">
     <h3>Employee: [[fullName]]</h3>
     <p>First Name: <input type="text" value="{{model.first::input}}">
     <p>Last Name: <input type="text" value="{{model.last::input}}">
@@ -20,7 +20,7 @@
     </select>
     <p>Department: 
     <select value="{{model.departmentId::change}}">
-      <template is="dom-repeat" items="[[state.departments]]">
+      <template is="dom-repeat" items="[[allDepartments]]">
         <option value="[[item.id]]"
                 selected$="{{areTwoValuesEqual(item.id, model.departmentId)}}">
           [[item.name]]
@@ -37,7 +37,7 @@
 
   goog.provide('coligo.elements.Employee');
 
-  goog.require('coligo.scripts.actions');
+  goog.require('coligo.behaviors.DetailsPage');
   goog.require('coligo.behaviors.ModelView');
   goog.require('coligo.behaviors.EmployeeModel');
   goog.require('coligo.behaviors.ActionEmitter');
@@ -52,57 +52,42 @@
         coligo.behaviors.ModelView,
         coligo.behaviors.EmployeeModel,
         coligo.behaviors.Utils,
-        coligo.behaviors.StateAware
+        coligo.behaviors.StateAware,
+        coligo.behaviors.DetailsPage
       ];
     }
 
     beforeRegister() {
       this.is = 'clg-employee';
-      this.modelPath = ''
+      this.route = 'employees';
+      this.fetchAction = this.actions.FETCH_EMPLOYEE;
       this.properties = {
-        hidden: {
-          type: Boolean,
-          value: true,
-          observer: 'hiddenChanged_'
-        },
-        id_: {
-          type: String
-        },
+
+        allDepartments: {
+          type: Array
+        }
+
       }
     }
 
     get observers() {
       return [
-        'routeChanged_(state.route)'
+        'hiddenChanged_(hidden_)'
       ]
     }
 
-    hiddenChanged_(hidden) {
-      if (!hidden) {
+
+    hiddenChanged_(hidden_) {
+      if (!hidden_) {
         this.emitAction({
           type: coligo.scripts.actions.FETCH_DEPARTMENTS,
+          path: 'allDepartments'
         });
       }
     }
 
-    routeChanged_(route) {
-      if (route.hash) {
-        this.id_ = route.valueAt(1);
-        this.set('hidden', !(route.valueAt(0) == '#employees' && this.id_));
-      }
-      if (!this.get('hidden') && this.id_) {
-        this.emitAction({
-          type: coligo.scripts.actions.FETCH_EMPLOYEE,
-          id: this.id_
-        });
-      }
-    }
-
-    onSaveClick_(event) {
-      this.emitAction({
-        type: coligo.scripts.actions.UPDATE_EMPLOYEE,
-        model: this.get('model')
-      });
+    onSaveClick_() {
+      this.saveModel(this.actions.SAVE_EMPLOYEE);
     }
 
   };

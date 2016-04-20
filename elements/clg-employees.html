@@ -4,7 +4,7 @@
   
 <template>
   <style is="custom-style">
-    a[selected] {
+    a[highlighted] {
       background: pink;
     }
   </style>
@@ -13,16 +13,18 @@
       <li id="[[item.id]]">
         <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#employees/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
+           highlighted$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
              [[item.last]], [[item.first]]</a>
       </li>
     </template>
-    <br>
-    <input type="button" 
-           value="Delete" 
-           on-click="onDeleteClick"
-           disabled$="[[!selectedCount_]]">
   </ul>
+  <input type="button"
+         value="Delete"
+         on-click="onDeleteClick"
+         disabled$="[[!selectedCount_]]">
+  <input type="button"
+         value="Add"
+         on-click="onAddClick_">
 </template>
 
 <script>
@@ -31,11 +33,12 @@
 
   goog.provide('coligo.elements.Employees');
 
-  goog.require('coligo.scripts.actions');
   goog.require('coligo.behaviors.ListPage');
   goog.require('coligo.behaviors.ListView');
   goog.require('coligo.behaviors.Utils');
   goog.require('coligo.behaviors.ActionEmitter');
+  goog.require('coligo.behaviors.StateAware');
+  goog.require('coligo.scripts.EmployeesActionDispatcher');
 
   coligo.elements.Employees = class Employees {
 
@@ -45,13 +48,20 @@
         coligo.behaviors.ActionEmitter,
         coligo.behaviors.ListView,
         coligo.behaviors.Utils,
+        coligo.behaviors.StateAware
       ];
+    }
+
+    get actionDispatchers() {
+      return [
+        coligo.scripts.EmployeesActionDispatcher
+      ]
     }
 
     beforeRegister() {
       this.is = 'clg-employees';
-      this.fetchAction = coligo.scripts.actions.FETCH_EMPLOYEES;
-      this.deleteAction = coligo.scripts.actions.DELETE_EMPLOYEE;
+      this.fetchAction = this.actions.FETCH_EMPLOYEES;
+      this.deleteAction = this.actions.DELETE_EMPLOYEE;
       this.properties = {
 
       }
@@ -61,6 +71,11 @@
       this.fire('delete-selected');
     }
 
+    onAddClick_() {
+      window.location.hash = '#employees/new'
+    }
+
+
   };
 
   // Register the element using Polymer's constructor.
@@ -69,3 +84,4 @@
 </script>
 
 </dom-module>
+

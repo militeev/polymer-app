@@ -23,7 +23,7 @@ coligo.behaviors.ListPage = {
   routeChanged_(route) {
 //     console.log('route changed: ', route);
     if (route.hash) {
-      this.highlightedItemId_ = route.valueAt(1);
+      this.highlightedItemId_ = route.valueAt(1) || '';
     }
   },
 

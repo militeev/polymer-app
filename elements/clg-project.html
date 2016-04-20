@@ -6,12 +6,15 @@
 <template>
   <style is="custom-style">
   </style>
-  <template is="dom-if" if="[[!hidden]]"> 
+  <template is="dom-if" if="[[!hidden_]]">
     <h3>Project: [[model.name]]</h3>
     <p>Name: <input type="text" value="{{model.name::input}}">
     <template is="dom-repeat" items="[[model.tasks]]">
       <clg-task model="[[item]]"></clg-task>
     </template>
+    <p>
+    <input type="button" value="Add Task" on-click="onAddTaskClick_">
+    <input type="button" value="Save" on-click="onSaveClick_">
   </template>
 </template>
 
@@ -25,6 +28,7 @@
   goog.require('coligo.behaviors.ModelView');
   goog.require('coligo.behaviors.ActionEmitter');
   goog.require('coligo.behaviors.StateAware');
+  goog.require('coligo.behaviors.DetailsPage');
 
   coligo.elements.Project = class Project {
 
@@ -32,41 +36,30 @@
       return [
         coligo.behaviors.ActionEmitter,
         coligo.behaviors.ModelView,
-        coligo.behaviors.StateAware
+        coligo.behaviors.StateAware,
+        coligo.behaviors.DetailsPage
       ];
-    }
-
-    get observers() {
-      return [
-        'routeChanged_(state.route)',
-      ]
     }
 
     beforeRegister() {
       this.is = 'clg-project';
+      this.route = 'projects';
+      this.fetchAction = this.actions.FETCH_PROJECT;
       this.properties = {
-        hidden: {
-          type: Boolean,
-          value: true
-        },
-        id_: {
-          type: String
-        }
       }
     }
 
-    routeChanged_(route) {
-      if (route.hash) {
-        this.id_ = route.valueAt(1);
-        this.set('hidden', !(route.valueAt(0) == '#projects' && this.id_));
-        if (!this.get('hidden')) {
-          this.emitAction({
-            type: coligo.scripts.actions.FETCH_PROJECT,
-            id: this.id_
-          });
-        }
+    onAddTaskClick_() {
+      if (!this.get('model.tasks')) {
+        this.set('model.tasks', []);
       }
+      this.push('model.tasks', {});
     }
+
+    onSaveClick_() {
+      this.saveModel(this.actions.SAVE_PROJECT);
+    }
+
   };
 
   // Register the element using Polymer's constructor.

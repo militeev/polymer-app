@@ -37,8 +37,8 @@ coligo.behaviors.ActionDispatcher = {
       case(coligo.scripts.actions.FETCH_EMPLOYEE):
         this.callDataService_('fetchEmployee', detail.id);
         break;
-      case(coligo.scripts.actions.UPDATE_EMPLOYEE):
-        this.callDataService_('updateEmployee', detail.model);
+      case(coligo.scripts.actions.SAVE_EMPLOYEE):
+        this.callDataService_('saveEmployee', detail.model);
         break;
       case(coligo.scripts.actions.DELETE_EMPLOYEE):
         this.callDataService_('deleteEmployee', detail.id);
@@ -48,6 +48,12 @@ coligo.behaviors.ActionDispatcher = {
         break;
       case(coligo.scripts.actions.FETCH_PROJECT):
         this.callDataService_('fetchProject', detail.id);
+        break;
+      case(coligo.scripts.actions.SAVE_PROJECT):
+        this.callDataService_('saveProject', detail.model);
+        break;
+      case(coligo.scripts.actions.DELETE_PROJECT):
+        this.callDataService_('deleteProject', detail.id);
         break;
     }
   },

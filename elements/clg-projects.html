@@ -11,18 +11,20 @@
   <ul>
     <template id="projects-template" is="dom-repeat" items="{{list}}">
       <li id="[[item.id]]">
-        <input type="checkbox" checked="{{item.$highlighted::change}}">
+        <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#projects/[[item.id]]"
-           selected$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
+           highlighted$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
              [[item.name]]</a>
       </li>
     </template>
-    <br>
-    <input type="button" 
-           value="Delete" 
-           on-click="onDeleteClick"
-           disabled$="[[!selectedCount_]]">
   </ul>
+  <input type="button"
+         value="Delete"
+         on-click="onDeleteClick"
+         disabled$="[[!selectedCount_]]">
+  <input type="button"
+         value="Add"
+         on-click="onAddClick_">
 </template>
 
 <script>
@@ -37,6 +39,7 @@
   goog.require('coligo.behaviors.StateAware');
   goog.require('coligo.behaviors.Utils');
   goog.require('coligo.behaviors.ActionEmitter');
+  goog.require('coligo.scripts.ProjectsActionDispatcher');
 
   coligo.elements.Projects = class Projects {
 
@@ -50,9 +53,14 @@
       ];
     }
 
+    get actionDispatchers() {
+      return [
+        coligo.scripts.ProjectsActionDispatcher
+      ]
+    }
+
     beforeRegister() {
       this.is = 'clg-projects';
-      this.listPath = 'state.projects';
       this.fetchAction = coligo.scripts.actions.FETCH_PROJECTS;
       this.deleteAction = coligo.scripts.actions.DELETE_PROJECT;
       this.properties = {
@@ -64,6 +72,10 @@
       this.fire('delete-selected');
     }
 
+    onAddClick_() {
+      window.location.hash = '#projects/new'
+    }
+
   };
 
   // Register the element using Polymer's constructor.
@@ -72,3 +84,9 @@
 </script>
 
 </dom-module>
+
+
+<!--Scarecrow Appropriate-->
+<!--Forsaken Donut-->
+<!--Jazz Everyday-->
+<!--Scarlet Peasant-->
