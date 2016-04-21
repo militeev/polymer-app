@@ -10,7 +10,9 @@
     <h3>Project: [[model.name]]</h3>
     <p>Name: <input type="text" value="{{model.name::input}}">
     <template is="dom-repeat" items="[[model.tasks]]">
-      <clg-task model="[[item]]" all-employees="[[allEmployees_]]"></clg-task>
+      <clg-task model="[[item]]"
+                all-employees="[[allEmployees_]]"
+                on-task-delete="onTaskDelete_"></clg-task>
     </template>
     <p>
     <input type="button" value="Add Task" on-click="onAddTaskClick_">
@@ -80,6 +82,11 @@
 
     onSaveClick_() {
       this.saveModel(this.actions.SAVE_PROJECT);
+    }
+
+    onTaskDelete_(event) {
+      console.log('on task delete', event.currentTarget.model);
+      this.arrayDelete('model.tasks', event.currentTarget.model);
     }
 
   };

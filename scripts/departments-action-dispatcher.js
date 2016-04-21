@@ -12,11 +12,6 @@ coligo.scripts.DepartmentsActionDispatcher = {
     console.log('Departments: dispatching action: ', action);
     let listPath = [options.statePath, 'list'];
     if (action == coligo.scripts.actions.DEPARTMENT_DELETED) {
-      // let index = this.get(listPath).findIndex(
-      //   elem => elem.id == options.id);
-      // if (index >= 0) {
-      //   this.splice(listPath, index, 1);
-      // }
       if (this.get('state.route.hash') == '#departments/' + options.id) {
         window.location.hash = 'departments';
       }

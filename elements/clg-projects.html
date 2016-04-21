@@ -14,7 +14,7 @@
         <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#projects/[[item.id]]"
            highlighted$="[[areTwoValuesEqual(item.id, highlightedItemId_)]]">
-             [[item.name]]</a>
+             [[item.name]]&nbsp;([[Projects$getTaskCount(item)]])</a>
       </li>
     </template>
   </ul>
@@ -33,7 +33,7 @@
 
   goog.provide('coligo.elements.Projects');
 
-  goog.require('coligo.scripts.actions');
+  goog.require('coligo.scripts.Projects');
   goog.require('coligo.behaviors.ListPage');
   goog.require('coligo.behaviors.ListView');
   goog.require('coligo.behaviors.StateAware');
@@ -64,8 +64,9 @@
       this.fetchAction = coligo.scripts.actions.FETCH_PROJECTS;
       this.deleteAction = coligo.scripts.actions.DELETE_PROJECT;
       this.properties = {
-
-      }
+      };
+      //
+      this.Projects$getTaskCount = coligo.scripts.Projects.getTaskCount;
     }
 
     onDeleteClick(event) {
@@ -85,8 +86,3 @@
 
 </dom-module>
 
-
-<!--Scarecrow Appropriate-->
-<!--Forsaken Donut-->
-<!--Jazz Everyday-->
-<!--Scarlet Peasant-->

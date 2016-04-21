@@ -39,4 +39,4 @@ coligo.behaviors.ListPage = {
     }
   },
 
-}
+};

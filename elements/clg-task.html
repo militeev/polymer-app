@@ -7,7 +7,8 @@
   </style>
   <hr>
   <p>Task: <input type="text" value="{{model.name::input}}">
-  <p>Size: 
+  <input type="button" value="X" on-click="onDeleteClick_">
+  <p>Size:
   <select value="{{model.size::change}}">
     <template is="dom-repeat" items="[[state.catalogs.TASK_SIZES]]">
       <option value="[[item.value]]"
@@ -48,6 +49,10 @@
         coligo.behaviors.StateAware,
         coligo.behaviors.Utils
       ];
+    }
+
+    onDeleteClick_(event) {
+      this.fire('task-delete');
     }
 
     beforeRegister() {
