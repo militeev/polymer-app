@@ -36,7 +36,9 @@
 
   <clg-firebase-data-service id="data-service" state="{{state}}"></clg-firebase-data-service>
   <clg-cache id="cache" state="{{state}}"></clg-cache>
-  <h2>My Application</h2>
+  <h2>My Organization</h2>
+  <h4>[[state.departmentCount]] departments, [[state.employeeCount]] employees working on
+  [[state.projectCount]] projects</h4>
   <div id="main">
     <div id="menu">
       <clg-menu state="[[state]]"></clg-menu>
@@ -106,16 +108,9 @@
       ];
     }
 
-    // get listeners() {
-    //   return {
-    //     'state-changed': 'onStateChanged_'
-    //   }
-    // }
-
-    // onStateChanged_(event, detail) {
-    //   //this.$['employee-view'].fire('state-changed', detail, {bubbles: false});
-    //   this.notifyStateAwareChildren(detail.path, detail.value);
-    // }
+    get listeners() {
+      return [];
+    }
 
     // Element setup goes in beforeRegister instead of createdCallback.
     beforeRegister() {

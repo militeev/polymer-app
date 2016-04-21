@@ -3,15 +3,15 @@ goog.provide('coligo.behaviors.ActionDispatcher');
 goog.require('coligo.scripts.actions');
 goog.require('coligo.behaviors.ActionEmitter');
 
-coligo.behaviors.ActionDispatcher = [{
+coligo.behaviors.ActionDispatcher = {
 
   listeners: {
 
-    'dispatch-action': 'onDispatchAction_'
+    'dispatch-action': 'onxDispatchAction_'
 
   },
 
-  onDispatchAction_: function(event, detail) {
+  onxDispatchAction_: function(event, detail) {
     console.log('Dispatching action: ', detail);
     this.$['data-service'].path = detail.path;
     switch (detail.type) {
@@ -71,4 +71,4 @@ coligo.behaviors.ActionDispatcher = [{
     this.$['data-service'][method](...args);
   }
 
-}, coligo.behaviors.ActionEmitter];
+};

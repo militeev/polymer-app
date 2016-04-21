@@ -25,11 +25,10 @@ coligo.behaviors.StateAware = {
   },
 
   observers: [
-    'stateChanged_(state.*)'
+    'stateAwareStateChanged_(state.*)'
   ],
 
   listeners: {
-    'dispatch-action': 'onDispatchAction_',
   },
 
   attached: function() {
@@ -40,7 +39,7 @@ coligo.behaviors.StateAware = {
     this.elementState = app.createElementState(this);
   },
 
-  stateChanged_: function(change) {
+  stateAwareStateChanged_: function(change) {
     if (this.elementState) {
       if (change.path.startsWith(this.elementState.getPath()) &&
           change.path.length > this.elementState.getPath().length) {
@@ -51,17 +50,9 @@ coligo.behaviors.StateAware = {
     this.notifyStateAwareChildren(change.path, change.value);
   },
 
-  enhancePath_(path) {
+  enhancePath(path) {
     return (path && !path.startsWith('state.')) ?
         (this.get('elementState').getPath() + '.' + path) : path;
-  },
-
-  onDispatchAction_: function(event, detail) {
-    detail.path = this.enhancePath_(detail.path);
-    detail.modelPath = this.enhancePath_(detail.modelPath);
-    detail.listPath = this.enhancePath_(detail.listPath);
-    detail.statusPath = this.enhancePath_(detail.statusPath);
-    console.log('dispatch action: ' + detail.path);
   },
 
   notifyStateAwareChildren: function(path, value) {
@@ -70,6 +61,26 @@ coligo.behaviors.StateAware = {
     stateAwareElements.forEach(element => {
       element.notifyPath(path, value, true);
     });
+  },
+
+  registerActionDispatchers() {
+    if (this.actionDispatchers) {
+      let application = document.querySelector('clg-app');
+      this.actionDispatchers.forEach(ad => {
+        let actionDispatcher = event => {
+          event.detail.statePath = this.get('elementState').getPath();
+          ad.dispatchAction.call(application, event.detail.type, event.detail);
+        };
+        application.addActionDispatcher(actionDispatcher);
+        this.registeredActionDispatchers.push(actionDispatcher);
+      });
+    }
+  },
+
+  unRegisterActionDispatchers() {
+    this.registeredActionDispatchers.forEach(ad => {
+      document.querySelector('clg-app').removeActionDispatcher(ad);
+    })
   }
-  
+
 }

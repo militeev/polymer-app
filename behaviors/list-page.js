@@ -13,15 +13,14 @@ coligo.behaviors.ListPage = {
   },
 
   observers: [
-    'routeChanged_(state.route)'
+    'listPageRouteChanged_(state.route)'
   ],
 
   beforeRegister() {
     this.registeredActionDispatchers = [];
   },
 
-  routeChanged_(route) {
-//     console.log('route changed: ', route);
+  listPageRouteChanged_(route) {
     if (route.hash) {
       this.highlightedItemId_ = route.valueAt(1) || '';
     }
@@ -39,25 +38,5 @@ coligo.behaviors.ListPage = {
       this.unRegisterActionDispatchers();
     }
   },
-
-  registerActionDispatchers() {
-    if (this.actionDispatchers) {
-      let application = document.querySelector('clg-app');
-      this.actionDispatchers.forEach(ad => {
-        let actionDispatcher = event => {
-          event.detail.statePath = this.get('elementState').getPath();
-          ad.dispatchAction.call(application, event.detail.type, event.detail);
-        };
-        application.addActionDispatcher(actionDispatcher);
-        this.registeredActionDispatchers.push(actionDispatcher);
-      });
-    }
-  },
-
-  unRegisterActionDispatchers() {
-    this.registeredActionDispatchers.forEach(ad => {
-      document.querySelector('clg-app').removeActionDispatcher(ad);
-    })
-  }
 
 }
