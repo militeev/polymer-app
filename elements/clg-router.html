@@ -34,7 +34,6 @@
     }
 
     onHashChange_() {
-      console.log(window.location.hash);
       this.setRoute_();
     }
 
@@ -46,7 +45,6 @@
           return this.hash.split('/')[index];
         }
       });
-//       this.set('state.route.hash', window.location.hash);
       this.set('state.currentPage', this.pages[currentPage]);
     }
 
@@ -57,13 +55,9 @@
 
     attached() {
       this.setRoute_();
-//       this.set('state.route', {
-//         hash: window.location.hash
-//       });
-//       this.set('state.abc', {xxx: 'def'});
     }
 
-  }
+  };
 
   // Register the element using Polymer's constructor.
   Polymer(coligo.elements.Router);

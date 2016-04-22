@@ -22,7 +22,6 @@ coligo.behaviors.EmployeeModel = {
   },
 
   computeFullName(first, last) {
-    //this.set('model.$fullName', first + ' ' + last);
     return first + ' ' + last;
   },
 

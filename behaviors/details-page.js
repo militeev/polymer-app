@@ -19,7 +19,7 @@ coligo.behaviors.DetailsPage = {
 
   observers: [
     'detailsPageRouteChanged_(state.route)',
-    'modelChanged_(model)'
+    'detailsPageModelChanged_(model)'
   ],
 
   detailsPageRouteChanged_(route) {
@@ -43,8 +43,7 @@ coligo.behaviors.DetailsPage = {
     }
   },
 
-  modelChanged_(model) {
-    console.log('model changed');
+  detailsPageModelChanged_(model) {
     if (model.id && model.id != this.id_) {
       window.location.hash = '#' + this.route + '/' + model.id;
     }

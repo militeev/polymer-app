@@ -17,7 +17,6 @@ coligo.behaviors.ListPage = {
   ],
 
   beforeRegister() {
-    this.registeredActionDispatchers = [];
   },
 
   listPageRouteChanged_(route) {

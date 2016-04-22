@@ -20,6 +20,11 @@ coligo.behaviors.StateAware = {
 
     elementState: {
       type: Object
+    },
+
+    application: {
+      type: Object,
+      value: {}
     }
 
   },
@@ -31,8 +36,12 @@ coligo.behaviors.StateAware = {
   listeners: {
   },
 
+  beforeRegister() {
+    this.registeredActionDispatchers = [];
+  },
+
   attached: function() {
-    let app = document.querySelector('clg-app');
+    let app = this.get('application.element');
     if (!this.state) {
       this.state = app.get('state');
     }
@@ -65,7 +74,7 @@ coligo.behaviors.StateAware = {
 
   registerActionDispatchers() {
     if (this.actionDispatchers) {
-      let application = document.querySelector('clg-app');
+      let application = this.get('application.element');
       this.actionDispatchers.forEach(ad => {
         let actionDispatcher = event => {
           event.detail.statePath = this.get('elementState').getPath();

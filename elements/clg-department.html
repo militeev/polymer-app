@@ -41,6 +41,12 @@
       ];
     }
 
+    get observers() {
+      return [
+        'departmentChanged_(id_)'
+      ];
+    }
+
     beforeRegister() {
       this.is = 'clg-department';
       this.route = 'departments';
@@ -55,12 +61,14 @@
     ready() {
     }
 
-    afterRouteChanged() {
-      this.emitAction({
-       type: coligo.scripts.actions.FETCH_EMPLOYEES,
-       departmentId: this.id_,
-       path: 'departmentEmployees'
-      });
+    departmentChanged_() {
+      if (this.id_) {
+        this.emitAction({
+          type: this.actions.FETCH_EMPLOYEES,
+          departmentId: this.id_,
+          path: 'departmentEmployees'
+        });
+      }
     }
 
     onSaveClick_() {
