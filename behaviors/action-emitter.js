@@ -18,4 +18,4 @@ coligo.behaviors.ActionEmitter = {
     this.actions = coligo.scripts.actions;
   }
 
-}
+};

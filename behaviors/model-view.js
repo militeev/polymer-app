@@ -14,6 +14,7 @@ coligo.behaviors.ModelView = {
       type: Object,
     },
 
+    /** Probably currently unused */
     modelPath: {
       type: String,
     },

@@ -10,6 +10,10 @@ coligo.behaviors.DetailsPage = {
       type: String
     },
 
+    route: {
+      type: String
+    },
+
     hidden_: {
       type: Boolean,
       value: true,

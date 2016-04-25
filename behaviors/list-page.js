@@ -11,7 +11,7 @@ coligo.behaviors.ListPage = {
     },
 
     route: {
-      type: Object
+      type: String
     },
 
     isPageActive: {

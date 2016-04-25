@@ -8,9 +8,18 @@
       background: pink;
     }
   </style>
-  <b>Sort:</b>
-  <input type="checkbox" checked="{{sortAscending::change}}"> Asc
-  <input type="checkbox" checked="{{sortDescending::change}}"> Desc
+  <b>Sort By Last Name:</b>
+  <select value="{{sortOrder::change}}">
+    <option selected value="no">
+      No
+    </option>
+    <option value="asc">
+      Ascending
+    </option>
+    <option value="desc">
+      Descending
+    </option>
+  </select>
   <ul>
     <template id="employees-template" is="dom-repeat" items="{{list}}"
               sort="{{compareNames(sortOrder)}}">
@@ -56,12 +65,6 @@
       ];
     }
 
-    get observers() {
-      return [
-        'sortChanged_(sortAscending, sortDescending)'
-      ]
-    }
-
     get actionDispatchers() {
       return [
         coligo.scripts.EmployeesActionDispatcher
@@ -74,33 +77,14 @@
       this.fetchAction = this.actions.FETCH_EMPLOYEES;
       this.deleteAction = this.actions.DELETE_EMPLOYEE;
       this.properties = {
-        sortAscending: {
-          type: Boolean,
-          value: false
-
-        },
-        sortDescending: {
-          type: Boolean,
-          value: false
-        },
-        sortOrder: String
-      }
-    }
-
-    sortChanged_() {     
-      if (this.sortAscending) {
-        this.sortDescending = false;
-        this.sortOrder = 'asc';
-      } else if (this.sortDescending) {
-        this.sortAscending = false;
-        this.sortOrder = 'desc';
-      } else {
-        this.sortOrder = '';
+        sortOrder: {
+          type: String
+        }
       }
     }
 
     compareNames(sortOrder) {
-      if (!sortOrder) {
+      if (!sortOrder || sortOrder == 'no') {
         return null;
       }
       return function(a, b) {
@@ -117,9 +101,8 @@
     }
 
     onAddClick_() {
-      window.location.hash = '#employees/new'
+      window.location.hash = '#employees/new';
     }
-
 
   };
 
