@@ -1,0 +1,25 @@
+{
+  "name": "polymer-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "http-proxy": "^1.13.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/militeev/polymer-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/militeev/polymer-app/issues"
+  },
+  "homepage": "https://github.com/militeev/polymer-app#readme"
+}
