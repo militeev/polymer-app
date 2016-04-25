@@ -27,6 +27,7 @@ coligo.scripts.EmployeesActionDispatcher = {
   },
 
   validateEmployee(model, statusPath) {
+    this.set([statusPath, 'validationErrors'], []);
     if (!model.first) {
       this.push([statusPath, 'validationErrors'], 'First name not specified');
     }

@@ -12,7 +12,7 @@
   <select value="{{model.size::change}}">
     <template is="dom-repeat" items="[[state.catalogs.TASK_SIZES]]">
       <option value="[[item.value]]"
-              selected$="{{areTwoValuesEqual(item.value, model.size)}}">
+              selected$="[[Utils$areTwoValuesEqual(item.value, model.size)]]">
         [[item.label]]
       </option>
     </template>
@@ -21,7 +21,7 @@
   <select value="{{model.owner::change}}">
     <template is="dom-repeat" items="[[allEmployees]]">
       <option value="[[item.id]]"
-              selected$="{{areTwoValuesEqual(item.id, model.owner)}}">
+              selected$="[[Utils$areTwoValuesEqual(item.id, model.owner)]]">
         [[item.last]], [[item.first]]
       </option>
     </template>
@@ -29,7 +29,7 @@
 
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -38,7 +38,7 @@
   goog.require('coligo.behaviors.ModelView');
   goog.require('coligo.behaviors.ActionEmitter');
   goog.require('coligo.behaviors.StateAware');
-  goog.require('coligo.behaviors.Utils');
+  goog.require('coligo.scripts.Utils');
 
   coligo.elements.Task = class Task {
 
@@ -62,6 +62,7 @@
           type: Array
         }
       }
+      this.Utils$areTwoValuesEqual = coligo.scripts.Utils.areTwoValuesEqual;
     }
 
   };

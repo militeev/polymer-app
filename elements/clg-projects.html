@@ -27,7 +27,7 @@
          on-click="onAddClick_">
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -61,6 +61,7 @@
 
     beforeRegister() {
       this.is = 'clg-projects';
+      this.route = 'projects';
       this.fetchAction = coligo.scripts.actions.FETCH_PROJECTS;
       this.deleteAction = coligo.scripts.actions.DELETE_PROJECT;
       this.properties = {

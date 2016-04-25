@@ -24,21 +24,21 @@ coligo.behaviors.DetailsPage = {
 
   detailsPageRouteChanged_(route) {
     if (route.hash) {
-      this.id_ = route.valueAt(1);
-      this.set('hidden_', !(route.valueAt(0) == '#' + this.route && this.id_));
+      this.set('hidden_', !(route.valueAt(0) == this.route && route.valueAt(1)));
       if (!this.get('hidden_')) {
-        if (this.id_ == 'new') {
+        let routeId = route.valueAt(1);
+        if (routeId == 'new') {
+          this.id_ = '';
           this.model = {};
-        } else if (!this.model || this.id_ != this.model.id) {
+        } else if (!this.model || this.id_ != routeId) {
+          this.id_ = routeId;
           this.emitAction({
             type: this.fetchAction,
             id: this.id_,
             path: 'model'
           });
         }
-        if (this.afterRouteChanged) {
-          this.afterRouteChanged();
-        }
+        this.fire('route-changed', route);
       }
     }
   },

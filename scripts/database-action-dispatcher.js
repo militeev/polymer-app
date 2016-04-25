@@ -66,6 +66,10 @@ goog.require('coligo.scripts.actions');
         case(coligo.scripts.actions.DELETE_PROJECT):
           callDataService('deleteProject', options.id);
           break;
+        // General purpose actions
+        case(coligo.scripts.actions.CLEAR_LIST):
+          this.set(options.path, []);
+          break;
       }
     },
 

@@ -8,6 +8,16 @@ coligo.behaviors.ListPage = {
 
     highlightedItemId_: {
       type: Number
+    },
+
+    route: {
+      type: Object
+    },
+
+    isPageActive: {
+      type: Boolean,
+      value: false,
+      observer: 'listPagePageActiveChanged_'
     }
 
   },
@@ -21,19 +31,26 @@ coligo.behaviors.ListPage = {
 
   listPageRouteChanged_(route) {
     if (route.hash) {
-      this.highlightedItemId_ = route.valueAt(1) || '';
+      if (this.route == route.valueAt(0)) {
+        this.set('isPageActive', true);
+        this.highlightedItemId_ = route.valueAt(1) || '';
+      } else {
+        this.set('isPageActive', false);
+        this.highlightedItemId_ = undefined;
+      }
     }
   },
 
-  pageWatcher(detail) {
-    if (this.fetchAction && detail.pageSelected) {
-      this.emitAction({
-        type: this.fetchAction,
-        path: 'list'
-      });
+  listPagePageActiveChanged_(isPageActive) {
+    if (isPageActive) {
+      if (this.fetchAction) {
+        this.emitAction({
+          type: this.fetchAction,
+          path: 'list'
+        });
+      }
       this.registerActionDispatchers();
-    }
-    if (detail.pageDeselected) {
+    } else {
       this.unRegisterActionDispatchers();
     }
   },

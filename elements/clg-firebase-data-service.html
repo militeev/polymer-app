@@ -6,7 +6,7 @@
 <template>
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -52,7 +52,7 @@
       });
     }
 
-    get(path, onSuccessAction, transform) {
+    getData(path, onSuccessAction, transform) {
       let statePath = this.path;
       this.ajaxCall(path, {method: 'GET'}, response => {
         if (response.response) {
@@ -84,10 +84,12 @@
     }
 
     getElement(path, onSuccessAction) {
-      this.get(path, onSuccessAction);
+      this.set(this.path, {});
+      this.getData(path, onSuccessAction);
     }
 
     getArray(path, onSuccessAction, filter) {
+      this.set(this.path, []);
       let transform = response => {
         let result = goog.object.getValues(response);
         if (filter) {
@@ -95,7 +97,7 @@
         }
         return result;
       }
-      this.get(path, onSuccessAction, transform);
+      this.getData(path, onSuccessAction, transform);
     }
 
     deleteElement(path, id, onSuccessAction) {

@@ -27,7 +27,7 @@
          on-click="onAddClick_">
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -61,6 +61,7 @@
 
     beforeRegister() {
       this.is = 'clg-departments';
+      this.route = 'departments';
       this.fetchAction = this.actions.FETCH_DEPARTMENTS;
       this.deleteAction = this.actions.DELETE_DEPARTMENT;
       this.properties = {

@@ -18,7 +18,7 @@
   </template>
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -68,6 +68,11 @@
           departmentId: this.id_,
           path: 'departmentEmployees'
         });
+      } else {
+        this.emitAction({
+          type: this.actions.CLEAR_LIST,
+          path: 'departmentEmployees'
+        })
       }
     }
 

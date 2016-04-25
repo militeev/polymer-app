@@ -74,7 +74,7 @@
 
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -115,7 +115,6 @@
       // Define the properties object in beforeRegister.
       this.properties = {
       };
-      this.listeners = [];
     }
 
     // Define other lifecycle methods as you need.
@@ -128,7 +127,7 @@
     attributeChanged() { }
 
     onPageSelect_(event, detail) {
-      this.notifyWatchers(detail.item, 'page-watcher', {pageSelected: true});
+//      this.notifyWatchers(detail.item, 'page-watcher', {pageSelected: true});
     }
 
     notifyWatchers(parent, watcherAttribute, detail) {
@@ -139,7 +138,7 @@
 
     onPageDeselect_(event, detail) {
       console.log('page deselected');
-      this.notifyWatchers(detail.item, 'page-watcher', {pageDeselected: true});
+//      this.notifyWatchers(detail.item, 'page-watcher', {pageDeselected: true});
     }
 
     createElementState(element) {

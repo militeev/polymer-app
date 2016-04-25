@@ -5,7 +5,7 @@
 <template>
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -42,7 +42,7 @@
       this.set('state.route', {
         hash: window.location.hash,
         valueAt: function(index) {
-          return this.hash.split('/')[index];
+          return this.hash.replace('#', '').split('/')[index];
         }
       });
       this.set('state.currentPage', this.pages[currentPage]);

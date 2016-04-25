@@ -15,7 +15,7 @@
   </template>
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -31,12 +31,7 @@
     get observers() {
       return [
         'onRouteChanged_(state.route)',
-        'onAbcChanged_(state.abc)'
       ]
-    }
-
-    onAbcChanged_() {
-      console.log('abc changed', this.state.abc);
     }
 
     // Element setup goes in beforeRegister instead of createdCallback.

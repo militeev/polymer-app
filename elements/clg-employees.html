@@ -8,8 +8,12 @@
       background: pink;
     }
   </style>
+  <b>Sort:</b>
+  <input type="checkbox" checked="{{sortAscending::change}}"> Asc
+  <input type="checkbox" checked="{{sortDescending::change}}"> Desc
   <ul>
-    <template id="employees-template" is="dom-repeat" items="{{list}}">
+    <template id="employees-template" is="dom-repeat" items="{{list}}"
+              sort="{{compareNames(sortOrder)}}">
       <li id="[[item.id]]">
         <input type="checkbox" checked="{{item.$selected::change}}">
         <a href="#employees/[[item.id]]"
@@ -27,7 +31,7 @@
          on-click="onAddClick_">
 </template>
 
-<script>
+<script type="text/javascript" type="text/ecmascript-6">
 
   'use strict';
 
@@ -52,6 +56,12 @@
       ];
     }
 
+    get observers() {
+      return [
+        'sortChanged_(sortAscending, sortDescending)'
+      ]
+    }
+
     get actionDispatchers() {
       return [
         coligo.scripts.EmployeesActionDispatcher
@@ -60,10 +70,45 @@
 
     beforeRegister() {
       this.is = 'clg-employees';
+      this.route = 'employees';
       this.fetchAction = this.actions.FETCH_EMPLOYEES;
       this.deleteAction = this.actions.DELETE_EMPLOYEE;
       this.properties = {
+        sortAscending: {
+          type: Boolean,
+          value: false
 
+        },
+        sortDescending: {
+          type: Boolean,
+          value: false
+        },
+        sortOrder: String
+      }
+    }
+
+    sortChanged_() {     
+      if (this.sortAscending) {
+        this.sortDescending = false;
+        this.sortOrder = 'asc';
+      } else if (this.sortDescending) {
+        this.sortAscending = false;
+        this.sortOrder = 'desc';
+      } else {
+        this.sortOrder = '';
+      }
+    }
+
+    compareNames(sortOrder) {
+      if (!sortOrder) {
+        return null;
+      }
+      return function(a, b) {
+        let result = a.last.localeCompare(b.last);
+        if (sortOrder == 'desc') {
+          result *= -1;
+        }
+        return result;
       }
     }
 
